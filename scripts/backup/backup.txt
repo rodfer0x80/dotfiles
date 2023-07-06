@@ -1,0 +1,6 @@
+documents
+notes
+reads
+workspace
+dotfiles
+.ssh

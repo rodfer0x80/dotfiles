@@ -1,0 +1,8 @@
+neofetch
+curl
+net-tools
+git
+python
+gcc
+gdb
+vim
