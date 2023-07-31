@@ -53,19 +53,20 @@ cd ~/.cache/music_assistant
 test -e "./venv" ||\
     python3 -m venv "./venv" &&\
     source "./venv/bin/activate" &&\
-    pip install --upgrade pip &&\
-    echo $PYREQ | xargs pip install || exit 4
+    python3 -m pip install --upgrade pip &&\
+    echo $PYREQ | xargs python3 -m pip install || exit 4
 source "./venv/bin/activate"
 
 mpc stop
 mpc clear
 
-WAV_FILE="/tmp/music_assistant_audio.wav"
-TXT_FILE="/tmp/music_assistant_transcript.txt"
+WAV_FILE=$(mktemp --suffix=.wav)
+TXT_FILE=$(mktemp --suffix=.txt)
+rm "$WAV_FILE" "$TXT_FILE"
 
-ffmpeg -y -f alsa -i default -acodec pcm_s16le -ac 1 -ar 44100 -t 4 -f wav $WAV_FILE
-vosk-transcriber -m $VOSK_MODEL_PATH -i $WAV_FILE -o $TXT_FILE
-read AUDIO_INPUT < $TXT_FILE
+ffmpeg -y -f alsa -i default -acodec pcm_s16le -ac 1 -ar 44100 -t 4 -f wav "$WAV_FILE"
+vosk-transcriber -m $VOSK_MODEL_PATH -i "$WAV_FILE" -o "$TXT_FILE"
+read AUDIO_INPUT < "$TXT_FILE"
 
 google_speech "Found ...  $AUDIO_INPUT" &
 
@@ -74,8 +75,8 @@ VIDEO_ID="$(curl -s "$MUSIC_SOURCE/results?search_query=$QUERY" | grep -oh "/wat
 YOUTUBE_URL=$(echo "https://youtube.com$VIDEO_ID" | cut -d "\\" -f1)
 AUDIO_URL="$(yt-dlp -f bestaudio --get-url "$YOUTUBE_URL")"
 
-sleep 2
+sleep 1
 mpc add "$AUDIO_URL"
-sleep 4 # needed to load, can adjust for setup
+sleep 2 # needed to load, can adjust for setup
 mpc play
-sleep 4
+sleep 1

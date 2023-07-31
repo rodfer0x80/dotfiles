@@ -284,7 +284,6 @@ export PATH=$PATH:"$HOME/.local/share/gem/ruby/3.0.0/bin"
 # chruby ruby-3.1.2
 #source /usr/local/opt/chruby/share/chruby/chruby.sh
 #export PATH=$PATH:"$HOME/.gem/ruby/3.0.0/bin"
-
 ## Alias section
 # off the land commands
 alias cp="cp -i"                                                        # Confirm before overwriting something

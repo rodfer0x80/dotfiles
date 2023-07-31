@@ -18,10 +18,7 @@ feh --bg-fill ~/.xbgs/pirate.jpg || ~/.xscripts/random_bg.py
 xcompmgr -n &
 
 # DWM bar 
-while xsetroot -name " [ $(~/.xscripts/volume.sh) ] [ $(~/.xscripts/backlight.sh) ] [ $(~/.xscripts/battery.sh) ] [ $(~/.xscripts/wifi.sh) $(~/.xscripts/tor.sh) ] [ $(~/.xscripts/date.sh) ] [ $(~/.xscripts/time.sh) ] "
-do
-    sleep 1
-done &
+~/.xscripts/toolbar.sh  &
 
 # DWM run
 exec dwm
