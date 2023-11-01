@@ -1,0 +1,12 @@
+version: "2.1"
+services:
+  rodfer0x80/python37.lab.ai:
+    image: rodfer0x80/python37.lab.ai
+    container_name: rodfer0x80/python37.lab.ai
+    user: 1000:1000
+    volumes:
+      - ./opt:/root/run
+    ports:
+      - 1337:1337
+    restart: unless-stopped
+    entrypoint: ./run.sh

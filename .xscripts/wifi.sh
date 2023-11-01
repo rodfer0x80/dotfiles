@@ -3,8 +3,8 @@
 # Gets the wifi status
 
 WIFI_FULL_ICON=''
-WIFI_MID_ICON='直'
-NO_WIFI_ICON='睊'
+WIFI_MID_ICON='󱚵'
+NO_WIFI_ICON='󰖪'
 
 get_wifi()
 {

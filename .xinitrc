@@ -6,7 +6,7 @@ export _JAVA_AWT_WM_NONREPARENTING=1
 setxkbmap -layout uk
 
 # enable desktop mode monitor
-setsid -f ~/.xscripts/desktopmon.sh &
+# setsid -f ~/.xscripts/desktopmon.sh &
 
 # Cursor icon off when unused
 unclutter &

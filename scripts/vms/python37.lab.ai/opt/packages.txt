@@ -1,0 +1,9 @@
+curl
+gdb
+vim
+libmfx1
+libmfx-tools
+libva-drm2
+libva-x11-2
+vainfo
+intel-media-va-driver-non-free

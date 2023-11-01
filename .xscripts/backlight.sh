@@ -1,10 +1,10 @@
 #!/bin/sh
 
-LIGHT_ICON="ﯦ"
+LIGHT_ICON="󰛨"
 
 get_backlight()
 {
-    XLIGHT=$(xbacklight)
+    XLIGHT=$(xbacklight -get)
     echo "$LIGHT_ICON $(echo "$XLIGHT" | cut -d "." -f1)%" 
 }
 

@@ -1,8 +1,6 @@
 #!/bin/sh
 
 test -e "$PWD/venv" &&\
-    source "$PWD/venv/bin/activate" ||\
-    python3 -m venv "$PWD/venv" &&\
-    source "$PWD/venv/bin/activate" &&\
-    pip install --upgrade pip &&\
-    pip install -r "$PWD/requirements.txt"
+    python3 -m venv "$PWD/.venv" &&\
+    "$PWD/.venv/bin/python" -m pip install --upgrade pip &&\
+    "$PWD/.venv/bin/python" -m pip install -r "$PWD/requirements.txt"

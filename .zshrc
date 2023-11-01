@@ -311,39 +311,33 @@ alias lsd="du -d 1"                                                     # Count 
 alias lookup="grep -rn "./" -e"                                         # Lookup file/dir by name in PWD
 alias ps="ps --forest"                                                  # ps trees subprocesses
 alias psa="ps -aux"                                                     # ps all
+# tools
+alias mva="~/scripts/system/mva.sh"
 alias grepipv4="~/scripts/networks/grepipv4.sh"
 # code editors
-alias pycode="sedsid pycharm . >/tmp/pycharm_debug.log 2>&1 &"
-alias code="/opt/vscode_linux64/code-insiders"
-alias eclipseide="setsid eclipse . >/tmp/eclipse_debug.log 2>&1 &"      # open eclipse-ide (java dev) in PWD with debug log
-alias makefile="$HOME/scripts/dev/build_makefile.py"                    # build make file for dirname
+alias code="/opt/VSCode-linux-x64/code"
+# python3-venv
+alias pyvenv="rm -rf /opt/python3-venv/* && python3 -m venv /opt/python3-venv"
 # system
-alias mva="~/scripts/system/mva.sh"
-alias binit="yes | mv ~/downloads/* ~/rubbish/"
+alias binit="yes | mv /opt/firefox/Downloads/* ~/downloads/* ~/rubbish/"
 alias bincl="yes | rm -rf ~/rubbish/*"
 alias sus="systemctl suspend"
 alias hibernate="systemctl hibernate"
 alias update="~/.xscripts/arch_update.sh"
+alias "?"="~/.xscripts/lynx_google.sh"
+alias ns="netstat -anp"
+alias pst="xclip -o >>"
 alias screenshot="~/.xscripts/screenshot.sh"
 alias clip="xclip -selection clipboard"                                 # copy to clipboard
-alias python2="python2.7"
-alias "?"="~/.xscripts/lynx_google.sh"
-alias browsh="docker run -it --rm browsh/browsh"
-alias ns="netstat -anp"
-alias clean="rm -rm ~/rubbish/*"
-alias pst="xclip -o >>"
-alias rmdups="~/scripts/system/rmdups.py"
 alias dualmon="~/.xscripts/dualmon.sh"
-alias pyvenv="~/scripts/templates/pyvenv/setup.py"
 #alias pst="echo `xclip -o` >> $1"
+alias rmdups="~/scripts/system/rmdups.py"
+alias rs="rsync -avxP"
+# graphics
 # bytes
 alias purgemeta="~/scripts/image/purge_metadata.sh"
-alias fshred="~/scripts/bytes/shred_file.sh"
-alias x2t="~/scripts/bytes/hex_txt.py"
-alias b2t="~/scripts/bytes/bin_to_txt.py"
-alias rmblanks="~/scripts/bytes/rmblanks.py"
-alias a2t="~/scripts/bytes/ascii_to_txt.py"
-alias volatility="/usr/bin/python3 /opt/volatility3/vol.py"
+alias fshred="~/scripts/system/shred_file.sh"
+alias rmblanks="~/scripts/system/rmblanks.py"
 # web
 alias tor-browser="~/library/tor-browser/Browser/start-tor-browser"
 alias chatgpt="~/library/chatgpt-cli/scripts/run.py"
@@ -354,8 +348,6 @@ alias nessus="~/scripts/exploits/nessus.sh"
 alias wav2mp3="~/scripts/audio/wav2mp3.sh"
 alias bluetooth="~/.xscripts/bluetooth.sh"
 alias spleeter="~/scripts/audio/spleeter.sh"
-# tesseract OCR
-export TESSDATA_PREFIX="/usr/share/tessdata"
 # video
 alias autosubtitle="~/scripts/video/autosubtitle/__main__.py"
 alias webm2mp3="~/scripts/video/webm2mp3.sh"
@@ -366,16 +358,10 @@ alias ytdlp="~/scripts/video/ytdl-playlist.sh"
 # git
 alias gitinit="~/scripts/git/git_init.sh"
 alias gitpush="~/scripts/git/git_push.sh"
-alias gitfork="~/scripts/git/git_fork_push.sh"
 alias gitup="~/scripts/git/git_upstream_push.sh"
+# code linters
+alias pylint="/opt/python3-venv/bin/python3 -m flake8"
+alias py="/opt/python3-venv/bin/python3"
 # backup
 alias backup="~/scripts/backup/backup.py"
 alias burniso="~/scripts/backup/burn_iso.sh"
-# vms
-alias hackbox="~/scripts/vms/hackbox/run_hackbox.sh"
-alias dbgbox="python3 ~/scripts/dbgbox/ssh_vm_dbgbox.py"
-alias updateblog="ssh rodfer.cloud 'cd rodfer.cloud && make update'"
-# third party
-alias burpsuite="~/library/burpsuite/BurpSuiteCommunity"
-alias cameradar="docker run -t ullaakut/cameradar -t"
-alias ghidra="/opt/ghidra/ghidraRun"

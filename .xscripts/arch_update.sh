@@ -2,24 +2,27 @@
 
 # sync
 reset
-sudo sync
+sync
 # update pacmandb
-yes | sudo pkgfile -u || exit 1
-yes | sudo pacman -Fyy || exit 2 
-yes | sudo pacman-db-upgrade || exit 3 
-yes | sudo pacman -Scc || exit 4 
+yes | pkgfile -u || exit 1
+yes | pacman -Fyy || exit 2 
+yes | pacman-db-upgrade || exit 3 
+yes | pacman -Scc || exit 4 
 # update pacman keyring
-yes | sudo pacman -Sy archlinux-keyring || exit 5 
+yes | pacman -Sy archlinux-keyring || exit 5 
 # update pacman
-yes | sudo pacman -Syyu || exit 6
+yes | pacman -Syyu || exit 6
 # update AUR
 yes | yay -Syua || exit 7 
-#yes | sudo pacman -Rscn $(yay -Qtdq)
+#yes |  pacman -Rscn $(yay -Qtdq)
 yes | yay -Yc || exit 8 
 # update python pip
-yes | pip install --upgrade pip || exit 9 
+yes | python -m pip install --upgrade pip || exit 9 
+yes | py -m pip install --upgrade pip || exit 10
+# reboot kernel
+mkinitcpio -p linux
 # oh-my-zsh
-echo "omz update" || exit 10 
+echo "omz update" || exit 11
 # sync
 reset
-sudo sync
+sync
