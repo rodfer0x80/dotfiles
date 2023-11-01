@@ -5,9 +5,9 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "Hack Nerd Font Mono:pixelsize=28:antialias=true:autohint=true";
+static char *font = "Hack Nerd Font Mono:pixelsize=26:antialias=true:autohint=true";
 //static char *font = "Liberation Mono:pixelsize=18:antialias=true:autohint=true";
-static int borderpx = 1;
+static int borderpx = 4;
 
 /*
  * What program is execed by st depends of these precedence rules:
@@ -156,8 +156,10 @@ static Geometry geometry = CellGeometry;
 /*
  * Default width and height (including borders!)
  */
-static unsigned int width = 568;
-static unsigned int height = 364;
+//static unsigned int width = 1920;
+//static unsigned int height = 1080;
+static unsigned int width = 564;
+static unsigned int height = 372;
 
 /*
  * Default columns and rows numbers
@@ -195,9 +197,9 @@ static uint forcemousemod = ShiftMask;
 const unsigned int mousescrollincrement = 1;
 static MouseShortcut mshortcuts[] = {
 	/* mask                 button   function        argument       release */
-	{ XK_ANY_MOD,           Button4, kscrollup,      {.i = 1},		0, /* !alt */ -1 },
-	{ XK_ANY_MOD,           Button5, kscrolldown,    {.i = 1},		0, /* !alt */ -1 },
-	{ XK_ANY_MOD,           Button2, selpaste,       {.i = 0},      1 },
+    // { XK_ANY_MOD,           Button4, kscrollup,      {.i = 1},		0, /* !alt */ -1 },
+	// { XK_ANY_MOD,           Button5, kscrolldown,    {.i = 1},		0, /* !alt */ -1 },
+    { XK_ANY_MOD,           Button2, selpaste,       {.i = 0},      1 },
 	{ ShiftMask,            Button4, ttysend,        {.s = "\033[5;2~"} },
 	{ XK_ANY_MOD,           Button4, ttysend,        {.s = "\031"} },
 	{ ShiftMask,            Button5, ttysend,        {.s = "\033[6;2~"} },
