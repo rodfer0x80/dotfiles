@@ -12,11 +12,11 @@ yes | sudo pacman -Scc || exit 4
 # only then update other packages
 yes | sudo pacman -Syyu archlinux-keyring || exit 5 
 # update AUR
-yes | sudo yay -Syua || exit 7 
+yes | yay -Syua || exit 7 
 # yes |  pacman -Rscn $(yay -Qtdq)
-yes | sudo yay -Yc || exit 8 
+yes | yay -Yc || exit 8 
 # update system python3 pip
-yes | sudo python3 -m pip install --upgrade pip || exit 9 
+yes | python3 -m pip install --upgrade pip || exit 9 
 # update user python3-venv pip
 yes | py -m pip install --upgrade pip || exit 10
 # reboot kernel
