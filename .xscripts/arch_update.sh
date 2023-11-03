@@ -1,10 +1,5 @@
 #!/bin/sh
 
-WORKDIR="~/.cache/archlinux_update"
-TIMESTAMP="$(date +'%H-%M-%S_%d-%m-%Y')"
-CACHEFILE="$WORKDIR/$TIMESTAMP.log"
-test -e "$WORKDIR" && rm -rf "$WORKDIR"
-mkdir -p "$WORKDIR" && touch "$CACHEFILE"
 # refresh
 reset
 sync
