@@ -239,24 +239,30 @@ source $ZSH/oh-my-zsh.sh
 # Compilation flags
 export ARCHFLAGS="-arch x86_64"
 # Keyboard
-export LANG=en_US.UTF-8
+export LANG=en_GB.UTF-8
 
 # home folder
 export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/share"
 
-## Terminal spawn
 # Colours
 autoload -U colors && colors
 # nerd fonts
-# default cyan
-# default white 
 #
 # Spawn
-# [rodfer@archbox]-[~]
-# >>> |
 neofetch 2>/dev/null
-#PS1="%{$fg[cyan]%}%B[%b%{$fg[white]%}%n%{$fg[cyan]%}%B@%b%{$fg[white]%}%m%{$fg[cyan]%}%B]-%b%{$fg[cyan]%}%B[%b%{$fg[white]%}%~%{$fg[cyan]%}%B]%b
-#%{$fg[cyan]%}%B>>>%b%{$reset_color%} "
+
+# zsh prompt
+if [ -d ~/.oh-my-zsh ]; then
+    # default ohmyzsh prompt
+else
+    # fallback custom prompt
+    # [rodfer@archbox]-[~]
+    # >>> |
+    PS1="%{$fg[red]%}%B[%b%{$fg[white]%}%n%{$fg[red]%}%B@%b%{$fg[white]%}%m%{$fg[red]%}%B]-%b%{$fg[red]%}%B[%b%{$fg[white]%}%~%{$fg[red]%}%B]%b
+    %{$fg[red]%}%B>>>%b%{$reset_color%} "
+fi
+
 #  Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
   export EDITOR='vim'
@@ -317,7 +323,10 @@ alias grepipv4="~/scripts/networks/grepipv4.sh"
 # code editors
 alias code="/opt/VSCode-linux-x64/code"
 # python3-venv
-alias pyvenv="rm -rf /opt/python3-venv/* && python3 -m venv /opt/python3-venv"
+PYTHON3_VENV="$HOME/.local/share/python3-venv"
+alias pyvenv="rm -rf $PYTHON3_VENV/* ; python3 -m venv $PYTHON3_VENV"
+alias pylint="$PYTHON_VENV/bin/python3 -m flake8"
+alias py="$PYTHON_VENV/bin/python3"
 # system
 alias binit="yes | mv /opt/firefox/Downloads/* ~/downloads/* ~/rubbish/"
 alias bincl="yes | rm -rf ~/rubbish/*"
@@ -326,6 +335,7 @@ alias hibernate="systemctl hibernate"
 alias update="~/.xscripts/arch_update.sh"
 alias timestamp="date +'%H-%M-%S_%d-%m-%Y'"
 alias "?"="~/.xscripts/lynx_google.sh"
+alias rmws="~/scripts/system/remove_whitespaces.sh"
 alias ns="netstat -anp"
 alias pst="xclip -o >>"
 alias screenshot="~/.xscripts/screenshot.sh"
@@ -360,9 +370,6 @@ alias ytdlp="~/scripts/video/ytdl-playlist.sh"
 alias gitinit="~/scripts/git/git_init.sh"
 alias gitpush="~/scripts/git/git_push.sh"
 alias gitup="~/scripts/git/git_upstream_push.sh"
-# code linters
-alias pylint="/opt/python3-venv/bin/python3 -m flake8"
-alias py="/opt/python3-venv/bin/python3"
 # backup
 alias backup="~/scripts/backup/backup.py"
 alias burniso="~/scripts/backup/burn_iso.sh"
