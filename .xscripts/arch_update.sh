@@ -1,5 +1,10 @@
 #!/bin/sh
 
+WORKDIR="~/.cache/archlinux_update"
+TIMESTAMP="$(date +'%H-%M-%S_%d-%m-%Y')"
+CACHEFILE="$WORKDIR/$TIMESTAMP.log"
+test -e "$WORKDIR" && rm -rf "$WORKDIR"
+mkdir -p "$WORKDIR" && touch "$CACHEFILE"
 # refresh
 reset
 sync
@@ -16,9 +21,7 @@ yes | yay -Syua || exit 7
 # yes |  pacman -Rscn $(yay -Qtdq)
 yes | yay -Yc || exit 8 
 # reboot kernel
-mkinitcpio -p linux
-# manually update oh-my-zsh
-echo "omz update" || exit 11
+sudo mkinitcpio -p linux || exit 9
 # refresh
 reset 
 sync
