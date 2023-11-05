@@ -324,9 +324,10 @@ alias grepipv4="~/scripts/networks/grepipv4.sh"
 alias code="/opt/VSCode-linux-x64/code"
 # python3-venv
 PYTHON3_VENV="$HOME/.local/share/python3-venv"
+PYTHON3="$PYTHON3_VENV/bin/python3"
 alias pyvenv="rm -rf $PYTHON3_VENV/* ; python3 -m venv $PYTHON3_VENV"
-alias pylint="$PYTHON_VENV/bin/python3 -m flake8"
-alias py="$PYTHON_VENV/bin/python3"
+alias pylint="$PYTHON3_VENV/bin/python3 -m flake8"
+alias py="$PYTHON3_VENV/bin/python3"
 # system
 alias binit="yes | mv /opt/firefox/Downloads/* ~/downloads/* ~/rubbish/"
 alias bincl="yes | rm -rf ~/rubbish/*"
