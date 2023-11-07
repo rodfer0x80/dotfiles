@@ -11,12 +11,12 @@ setopt histignorealldups        # If a new command is a duplicate, remove the ol
 setopt autocd                   # if only directory path is entered, cd there.
 setopt inc_append_history       # Dont repeat cmds in histfile
 set umask 077				    # File perms mask groups and others
-
-## Autocomplete features
 # CMD History 
 HISTSIZE=1000
 SAVEHIST=1000
 HISTFILE=~/.zsh_history
+
+## Autocomplete features
 # Saved commands are added to the history immediately, otherwise only when shell exits.
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'   # Case insensitive tab completion
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"     # Colored completion (different colors for dirs/files/etc)
@@ -26,7 +26,19 @@ zstyle ':completion:*' accept-exact '*(N)'
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path ~/.zsh/cache
 WORDCHARS=${WORDCHARS//\/[&.;]}                             #  Don't consider certain characters part of the word
-# Vi mode
+# Fancy auto-complete
+autoload -Uz compinit
+zstyle ':completion:*' menu select=0
+zmodload zsh/complist
+zstyle ':completion:*' format '>>> %d'
+compinit
+_comp_options+=(globdots)               # hidden files are included
+# Autosuggestions
+source $HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh || git clone https://github.com/zsh-users/zsh-autosuggestions $HOME/.zsh/zsh-autosuggestions && source $HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+# Syntax highlighting
+source $HOME/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh || git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $HOME/.zsh/zsh-syntax-highlighting --depth 1 && source $HOME/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+## Vi mode
 bindkey -v
 # Navigate words with ctrl+arrow keys
 bindkey '^[Oc' forward-word                                 #
@@ -41,17 +53,7 @@ bindkey "$terminfo[kcuu1]" history-substring-search-up
 bindkey "$terminfo[kcud1]" history-substring-search-down
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
-# Fancy auto-complete
-autoload -Uz compinit
-zstyle ':completion:*' menu select=0
-zmodload zsh/complist
-zstyle ':completion:*' format '>>> %d'
-compinit
-_comp_options+=(globdots)               # hidden files are included
-# Autosuggestions
-source $HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh || git clone https://github.com/zsh-users/zsh-autosuggestions $HOME/.zsh/zsh-autosuggestions && source $HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
-# Syntax highlighting
-source $HOME/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh || git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $HOME/.zsh/zsh-syntax-highlighting --depth 1 && source $HOME/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
 
 ## Keybindings section
 bindkey -e
@@ -241,21 +243,17 @@ export ARCHFLAGS="-arch x86_64"
 # Keyboard
 export LANG=en_GB.UTF-8
 
-# home folder
+## Home
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
-
 # Colours
 autoload -U colors && colors
 # nerd fonts
-#
 # Spawn
 neofetch 2>/dev/null
 
 # zsh prompt
-if [ -d ~/.oh-my-zsh ]; then
-    # default ohmyzsh prompt
-else
+if ! [[ -d ~/.oh-my-zsh ]] ; then
     # fallback custom prompt
     # [rodfer@archbox]-[~]
     # >>> |
@@ -271,6 +269,7 @@ else
 fi
 export BROWSER="firefox"
 export EDITOR="vim"
+
 LS_COLORS='rs=0:di=01;31:ln=01;31:mh=00:pi=40;31:so=01;35:do=01;35:bd=40;31;01:cd=40;31;01:or=40;31;01:mi=00:su=31;41:sg=30;43:ca=00:tw=30;42:ow=31;42:st=31;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.avif=01;35:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;93:*.au=00;93:*.flac=00;93:*.m4a=00;93:*.mid=00;93:*.midi=00;93:*.mka=00;93:*.mp3=00;93:*.mpc=00;93:*.ogg=00;93:*.ra=00;93:*.wav=00;93:*.oga=00;93:*.opus=00;93:*.spx=00;93:*.xspf=00;93:*~=00;90:*#=00;90:*.bak=00;90:*.old=00;90:*.orig=00;90:*.part=00;90:*.rej=00;90:*.swp=00;90:*.tmp=00;90:*.dpkg-dist=00;90:*.dpkg-old=00;90:*.ucf-dist=00;90:*.ucf-new=00;90:*.ucf-old=00;90:*.rpmnew=00;90:*.rpmorig=00;90:*.rpmsave=00;90:';
 export LS_COLORS
 
@@ -307,7 +306,7 @@ alias l="ls -lhArt"                                                     # ls all
 alias lsc="ls -A | wc -l"                                               # count number of files in PWD
 alias r="reset"                                                         # reset char cmd
 alias t="tmux"
-alias shred="shred -zf"                                                 # shred zero fill file location
+alias shred="shred -n 42 -zf"                                           # shred zero fill file location
 alias vi="vim"                                                          # vi is vim
 alias sl="ls"                                                           # Autocorrect ls
 alias dd="dd status=progress"                                           # Display status on dd
@@ -317,8 +316,10 @@ alias lsd="du -d 1"                                                     # Count 
 alias lookup="grep -rn "./" -e"                                         # Lookup file/dir by name in PWD
 alias ps="ps --forest"                                                  # ps trees subprocesses
 alias psa="ps -aux"                                                     # ps all
-# tools
-alias mva="~/scripts/system/mva.sh"
+alias rs="rsync -avxP"
+alias timestamp="date +'%H-%M-%S_%d-%m-%Y'"
+alias ns="netstat -anp"
+# networks
 alias grepipv4="~/scripts/networks/grepipv4.sh"
 # code editors
 alias code="/opt/VSCode-linux-x64/code"
@@ -329,33 +330,26 @@ alias pyvenv="rm -rf $PYTHON3_VENV/* ; python3 -m venv $PYTHON3_VENV"
 alias pylint="$PYTHON3_VENV/bin/python3 -m flake8"
 alias py="$PYTHON3_VENV/bin/python3"
 # system
+alias mva="~/scripts/system/mva.sh"
 alias binit="yes | mv /opt/firefox/Downloads/* ~/downloads/* ~/rubbish/"
 alias bincl="yes | rm -rf ~/rubbish/*"
 alias sus="systemctl suspend"
 alias hibernate="systemctl hibernate"
 alias update="~/.xscripts/arch_update.sh"
-alias timestamp="date +'%H-%M-%S_%d-%m-%Y'"
-alias "?"="~/.xscripts/lynx_google.sh"
-alias rmws="~/scripts/system/remove_whitespaces.sh"
-alias ns="netstat -anp"
+alias "?"="~/scripts/web/lynx_google.sh"
 alias pst="xclip -o >>"
 alias screenshot="~/.xscripts/screenshot.sh"
 alias clip="xclip -selection clipboard"                                 # copy to clipboard
 alias dualmon="~/.xscripts/dualmon.sh"
 #alias pst="echo `xclip -o` >> $1"
-alias rmdups="~/scripts/system/rmdups.py"
-alias rs="rsync -avxP"
-# graphics
-# bytes
+# files
 alias purgemeta="~/scripts/image/purge_metadata.sh"
-alias fshred="~/scripts/system/shred_file.sh"
+alias rmws="~/scripts/system/remove_whitespaces.sh"
+alias rmdups="~/scripts/system/rmdups.py"
 alias rmblanks="~/scripts/system/rmblanks.py"
 # web
-alias tor-browser="~/library/tor-browser/Browser/start-tor-browser"
-alias chatgpt="~/library/chatgpt-cli/scripts/run.py"
 alias open="~/.xscripts/open.sh"
 alias hackernews="~/scripts/web/hackernewscli.py"
-alias nessus="~/scripts/exploits/nessus.sh"
 # audio
 alias wav2mp3="~/scripts/audio/wav2mp3.sh"
 alias bluetooth="~/.xscripts/bluetooth.sh"

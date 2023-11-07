@@ -6,6 +6,14 @@
 
 <img src="imgs/term.jpg"></img>
 
+
+# Next iteration
+````
+-- Automation Scripts
+- Arch install script -> []
+- User setup and config home dir -> []
+````
+
 ````
 -- Graphics
 - dwm -> [ ] hyprland
@@ -19,11 +27,8 @@
 - oh-my-zsh -> [ ] fish plugin
 - vim
 ````
-
 ````
-Theme: Anarchy -> [ ] FADOC (Fat and Depressed Orange Cat)
-Colour Scheme
-Desktop
-Terminal
+Colour Scheme 
+- red -> orange
 ````
 

@@ -2,473 +2,287 @@
 
 import os
 import datetime
-import requests
-import subprocess
+import urllib.request
+import json
+import threading
 import sys
 import time
+import subprocess
 
-try:
-    import pyfiglet
-    BANNER = True
-except:
-    BANNER = False
+class Cache:
+    def __init__(self, cache_file=None):
+        self.cache_timout_seconds = 30 * 60
 
+        self.cache_dir = f"{os.environ['HOME']}/.cache/{__file__.split('/')[-1][:-3]}" # ~/.cache/hackernewscli
+        if not os.path.exists(self.cache_dir):
+            os.makedirs(self.cache_dir, mode=0o700, exist_ok=True)
+        
+        if not cache_file:
+            self.cache_file = os.path.join(self.cache_dir, "cache.txt")
 
-HTTP_SUCCESS = 200
-CACHE_DIR = f"{os.environ['HOME']}/.cache/hackernewscli"
-TOP_NEWS = f"{CACHE_DIR}/cache.txt"
-READS_SIZE = 80
-PAGE_SIZE = 4
-
-# setup cache
-os.system(f"test -e {TOP_NEWS} || mkdir -p {CACHE_DIR}")
-
-# default linux browser
-try:
-    BROWSER = os.environ['BROWSER']
-except KeyError:
-    sys.stderr.write("[!] Flag $BROWSER not set\n")
-    sys.exit(2)
-
-# Cache
-# DATA_UNIT_SIZE represents the size of a block of data from the API
-# each read maps to 5 key:value of information about the read
-# -5:rank,
-# -4:title,
-# -3:time,
-# -2:link, 
-# -1:comments
-# so to access values decrement variable
-DATA_UNIT_SIZE = 5
-CACHE_TIMEOUT_SECONDS = 30 * 60
-try:
-    CACHE_TIMEOUT_SECONDS = int(CACHE_TIMEOUT_SECONDS)
-except:
-    sys.stderr.write("[!] CACHE_TIMEOUT_SECONDS must be and integer of seconds\n")
-    sys.exit(3)
+        self.cache_lock = threading.Lock()  
 
 
-
-def check_cache():
-    global TOP_NEWS, CACHE_TIMEOUT_SECONDS
-    if os.path.exists(TOP_NEWS):
-        with open(TOP_NEWS, 'r') as fp:
-            data = fp.read().splitlines()
-        new_data = list()
-        for line in data:
-            if line != "":
-                new_data.append(line)
-        if len(new_data) == 0:
-            sys.stderr.write("[!] Error parsing tempfile\n")
-            return data
-        data = new_data
-        try:
-            timestamp = int(data[0])
-        except ValueError:
-            sys.stderr.write("[!] Error reading tempfile timestamp\n")
-            return data
-        try:
-            cw = int(round(time.time()))
-        except:
-            sys.stderr.write("[!] Error with system clock\n")
-            sys.exit(6)
-        if cw - timestamp > CACHE_TIMEOUT_SECONDS:
-            os.remove(TOP_NEWS)
-            return list()
-        return data[1:]
-    return list()
-
-def banner():
-    global BANNER
-    print('\033c')
-    if BANNER:
-        ascii_banner = pyfiglet.figlet_format("Fetching HackerNews API ... \n")
-    else:
-        ascii_banner = "Fetching HackerNews API ...\n"
-    print(ascii_banner)
-    
-
-def show_menu():
-    global READS_SIZE, PAGE_SIZE
-    print('\033c')
-    print("******** HackerNews CLI Menu ********")
-    print("")
-    print(f"(x: int | x <= [1..{READS_SIZE}])  --  open read by ID")
-    print(f"(&x: int | x <= [1..{READS_SIZE}])  --  open comments by ID")
-    print("j[n]  --  scroll reader up .n [page limit 0] where n is number of pages to move")
-    print(f"k[n]  --  scroll reader down .n [page limit {READS_SIZE//PAGE_SIZE}] where n is the numbe rof pages to move")
-    print("r  --  refresh news cache")
-    print("help / h  --  display help menu")
-    print("quit / q  --  quit program")
-    print("")
-    print("********---------------------********")
-    print("")
-    print("")
-
-def hackernews_cli(data, handle):
-    # Event Handler
-    global TOP_NEWS, READS_SIZE, PAGE_SIZE
-    if len(data) == 0:
-        data = fetch_api()
-    show_feed(data, handle)
-    try:
-        read = input(">>> ")
-    except:
-        print("[!] Error reading command")
-        print("Type 'help' or 'h' to see help menu")
-        time.sleep(1)
-    if read == "quit" or read == "q":
-        print("[*] Gracefully quitting ...")
-        sys.exit(0)
-    elif len(read) == 0:
-        show_menu()
-        print("[!] Invalid command\n")
-        time.sleep(2)
-        return data, handle
-    elif read[0] == "&":
-        try:
-            comment = int(read[1:])
-            if show_comments(data, comment) != 0:
-                sys.stderr.write("[!] Read input out of bounds for data size\n")
-                _ = int("IndexOutOfRange")
-        except ValueError:
-            show_menu()
-            print("[!] Invalid command\n")
-            time.sleep(2)
-            return data, handle
-    elif read[0] == "k":
-        try:
-            c = int(read[1:])
-        except:
-            c = 1
-        handle -=  c
-        if handle < 0:
-            handle = 0
-        return data, handle
-    elif read[0] == "j" and handle < (READS_SIZE//PAGE_SIZE):
-        try:
-            c = int(read[1:])
-        except:
-            c = 1
-        handle += c
-        if handle > (READS_SIZE//PAGE_SIZE)-1:
-            handle = (READS_SIZE//PAGE_SIZE)-1
-    elif read == "r" or read == "refresh" :
-        try:
-            os.remove(TOP_NEWS)
-        except:
-            pass
-        finally:
-            data = fetch_api()
-            return hackernews_cli(data, 0)
-    elif read == "h" or read == "help":
-        show_menu()
-        time.sleep(2)
-    else:
-        try:
-            read = int(read)
-            if show_read(data, read) != 0:
-                sys.stderr.write("[!] Read input out of bounds for data size\n")
-                _ = int("IndexOutOfRange")
-        except ValueError:
-            show_menu()
-            print("[!] Invalid command\n")
-            time.sleep(2)
-            return data, handle
-
-    return data, handle
-
-#######################################
-# Open links for reads and comments
-# Use brower set by flag $BROWER
-#######################################
-
-def show_comments(data, comment):
-    global BROWSER, READS_SIZE, PAGE_SIZE, DATA_UNIT_SIZE
-    if comment != 0:
-        comments = comment*DATA_UNIT_SIZE-1
-        if comment  > READS_SIZE:
-            return 1
-        link = data[comments]
-        _, link = link.split(": ")
-        if sys.platform == "darwin":
-            cmd = ["open", "-a", BROWSER.capitalize(), f"{link}"]
-        else: # linux
-            cmd = [BROWSER, f"{link}"]
-        try:
-            subprocess.call(cmd)
-        except:
-            sys.stderr.write("[!] Error calling subprocess\n")
-    return 0
-
-
-# read_input <= [1..30]
-# array_index_start = 0; read_input_start = 1; 
-# read_space_in_lines = 5 (each read occupies 5 lines in the logfile)
-# link_index = 3
-def show_read(data, read):
-    global BROWSER, READS_SIZE, DATA_UNIT_SIZE
-    if read != 0:
-        read_link = (read -1) * DATA_UNIT_SIZE + DATA_UNIT_SIZE-2
-        if read > READS_SIZE:
-            return 1
-        link = data[read_link]
-        _, link = link.split(": ")
-        cmd = [BROWSER, f"{link}"]
-        try:
-            subprocess.call(cmd)
-        except:
-            sys.stderr.write("[!] Error calling subprocess\n")
-    return 0
-
-
-def show_feed(data, handle):
-    global PAGE_SIZE, DATA_UNIT_SIZE
-    print('\033c')
-    i = 0
-    len_data = len(data)
-    for line in data[handle*PAGE_SIZE*DATA_UNIT_SIZE:(handle+1)*PAGE_SIZE*DATA_UNIT_SIZE]:
-        print(line)
-        i += 1
-        # post block has length 5 lines 
-        if i == DATA_UNIT_SIZE:
-            print("\n")
-            i = 0
-    return 0
-
-def get_call(url):
-    # Make GET calls to fetch API
-    # Parse data 
-    # Cache and read from cache
-    global HTTP_SUCCESS
-    err = False
-    try:
-        res = requests.get(url)
-    except Exception as e:
-        sys.stderr.write(f"[!] Connection problem, can't reach API -- {e}\n")
-        sys.exit(4)
-    if res.status_code != HTTP_SUCCESS:
-        err = True
-        return f"[x] Response status code: {res.status_code} -- ", err
-    return res, err
-
-
-def process_response(res):
-    global READS_SIZE
-    read_ids = res.json()
-    reads = list()
-    for read_id in read_ids[:READS_SIZE]:
-        url = f"https://hacker-news.firebaseio.com/v0/item/{read_id}.json"
-        res, err = get_call(url)
-        if not err:
-            res_dict = res.json()
+    def clean(self):
+        with self.cache_lock:
             try:
-                link = res_dict['url']
+                os.remove(self.cache_file)
             except:
-                link = "<no_link>"
-            read = {
-                    'title': res_dict['title'],
-                    'time': datetime.datetime.fromtimestamp(res_dict['time']).strftime("%A, %B %d, %Y %I:%M:%S"),
-                    'link': link,
-                    'comments': f"https://news.ycombinator.com/item?id={read_id}",
-            }
-            reads.append(read)
-        else:
-            sys.stderr.write(err)
-    return reads
+                pass
 
+    def read(self):
+        with self.cache_lock:
+            if os.path.exists(self.cache_file):
+                try:
+                    with open(self.cache_file, 'r') as fp:
+                        data = fp.read().splitlines()
+                    new_data = [line for line in data if line != ""]
+                    if len(new_data) == 0:
+                        return data
+                    timestamp = int(new_data[0])
+                    current_time = int(time.time())
+                    if current_time - timestamp <= self.cache_timout_seconds:
+                        return new_data[1:]
+                    else:
+                        os.remove(self.cache_file)
+                except Exception as e:
+                    sys.stderr.write(f"[!] Error reading cache: {e}\n")
+            return []
 
-def fetch_api():
-    global TOP_NEWS
-    url = "https://hacker-news.firebaseio.com/v0/topstories.json"
-    res, err = get_call(url)
-    if err:
-        sys.stderr.write(res)
-        sys.exit(5)
-    # multithread for each each and write to cache file using mutex
-    # then read file, remove timestamp and return to cli inteface
-    reads = process_response(res)
-    timestamp = int(round(time.time()))
-    data = f"{timestamp}\n"
-    i = 1
-    for read in reads:
-        data += f"Rank: {i}\n"
-        data += f"\tTitle: {read['title']}\n"
-        data += f"\tTime: {read['time']}\n"
-        data += f"\tLink: {read['link']}\n"
-        data += f"\tComments: {read['comments']}\n"
-        i += 1
-    new_data = list()
-    with open(TOP_NEWS, "w") as fp:
-        fp.write(data)
-    for line in data.splitlines():
-        if line != "":
-            new_data.append(line)
-    return new_data[1:]
+    def write(self, data):
+        with self.cache_lock:
+            try:
+                with open(self.cache_file, "w") as fp:
+                    fp.write(data)
+            except Exception as e:
+                sys.stderr.write(f"[!] Error writing cache: {e}\n")
 
-def hackernewscli_run():
-    os.umask(~0o700) # linux mask 700
-    tmp_dir = "/tmp"
-    try:
-        os.system(f"echo 'test' > {tmp_dir}/tmp.txt && rm -f {tmp_dir}/tmp.txt")
-    except:
-        sys.stderr.write("[!] Script needs read and write permission to {tmp_dir}\n")
-        sys.exit(1)
-
-    handle  = 0
-    data = check_cache()
-    
-    banner()
-    time.sleep(1)
-    
-    while True:
-        data, handle = hackernews_cli(data, handle)
-    
-    return 0
-
-class PyBS:
-    NAME = "hackernewscli"
-    REQUIREMENTS = [
-        "requests"
-    ]
-    RUN = "hackernewscli_run"
-
-    def __init__(self) -> None:
-        self.env_path = os.path.expanduser("~/.cache/{}".format(self.NAME))
-        self.env_bin = os.path.join(self.env_path, 'bin', 'python')
-
-        self.activate_script = os.path.join(self.env_path, 'bin', 'activate')
-        self.source_cmd = f"source {self.activate_script}"
+class Scraper:
+    def __init__(self, threads=4, http_success_code=200, data_size=80) -> None:
+        self.threads = threads
+        self.http_success_code = http_success_code
+        self.data_size = data_size   
+        self.cache = Cache()
 
     def __call__(self):
-        self.run()
-    
-    def freshRun(self):
-        self.clean()
-        self.run()
-
-    def run(self):
-        self.setup()
-        if self.RUN in globals() and callable(globals()[self.RUN]):
-            globals()[self.RUN]()
-            return 0
-        else:
-            return 1
-    
-    def clean(self):
-        if os.path.exists(self.env_path):
-            subprocess.run(["rm", "-rf", self.env_path])
-
-    def setup(self):
-        self.setupEnv()
+        data = self.cache.read()
+        if data != []:
+            return data
         
-    def setupEnv(self):
-        os.makedirs(self.env_path, exist_ok=True)
-        if not os.path.exists(self.env_bin):
-            if self.createVenv() != 0:
-                sys.stderr.write(f"[setupEnv] Error creating venv {self.env_path}\n")
+        res, err = self.get_call("https://hacker-news.firebaseio.com/v0/topstories.json")
+        if err:
+            sys.stderr.write(err)
+            return []
+
+        read_ids = res[:self.data_size]
+        reads = []
+
+        threads = []
+        results_lock = threading.Lock()
+
+        for read_id in read_ids:
+            thread = threading.Thread(target=self.fetch_and_process, args=(read_id, reads, results_lock))
+            threads.append(thread)
+            thread.start()
+
+        for thread in threads:
+            thread.join()
+
+        # filtered_reads = [read for read in reads if read['comments'].split('=')[-1] in read_ids]
+
+        # filtered_reads.sort(key=lambda x: read_ids.index(x['comments'].split('=')[-1]))
+
+        data = f"{int(round(time.time()))}\n"
+        i = 1
+        for read in reads:
+            data += f"Rank: {i}\n"
+            data += f"\tTitle: {read['title']}\n"
+            data += f"\tTime: {read['time']}\n"
+            data += f"\tLink: {read['link']}\n"
+            data += f"\tComments: {read['comments']}\n"
+            i += 1
+
+        self.cache.write(data)
+        return [line for line in data.splitlines() if line != ""][1:]
+
+    def get_call(self, url):
+        try:
+            con = urllib.request.urlopen(url)
+            res = json.load(con)
+            con.close()
+        except urllib.error.URLError as e:
+                return "", f"[!] Connection problem, can't reach server -- {e}"
+        except json.JSONDecodeError as e:
+                return "", f"[!] Error decoding json -- {e}"
+        return res, None
+    
+    def fetch_and_process(self, read_id, results, results_lock):
+        url = f"https://hacker-news.firebaseio.com/v0/item/{read_id}.json"
+        res, err = self.get_call(url)
+        
+        if not err:
+            res_dict = res
+            link = res_dict.get('url', "<no_link>")
+            read = {
+                'title': res_dict['title'],
+                'time': datetime.datetime.fromtimestamp(res_dict['time']).strftime("%A, %B %d, %Y %I:%M:%S"),
+                'link': link,
+                'comments': f"https://news.ycombinator.com/item?id={read_id}",
+            }
+            
+            with results_lock:
+                results.append(read)
+
+class Reader:
+    def __init__(self, reads_size=80, page_size=10, data_unit_size=5):
+        self.reads_size = reads_size
+        self.page_size = page_size
+        self.data_unit_size = data_unit_size
+
+        self.scraper = Scraper(threads=4, http_success_code=200, data_size=self.reads_size)
+
+    def build_banner(self):
+        banner = "\033c\nFetching HackerNews API ...\n"
+        return banner
+    
+    def build_menu(self):
+        menu = (
+            '\033c'
+            "******** HackerNews CLI Menu ********\n"
+            f"\n(x: int | x <= [1..{self.reads_size}])  --  open read by ID\n"
+            f"(&x: int | x <= [1..{self.reads_size}])  --  open comments by ID\n"
+            "j[n]  --  scroll reader up .n [page limit 0] where n is number of pages to move\n"
+            f"k[n]  --  scroll reader down .n [page limit {self.reads_size // self.page_size}] where n is the number of pages to move\n"
+            "r  --  refresh news cache\n"
+            "help / h  --  display help menu\n"
+            "quit / q  --  quit program\n"
+            "\n********---------------------********\n"
+            "\n\n"
+        )
+        return menu
+
+    def run(self, data, handle):
+        if len(data) == 0:
+            data = self.scraper()
+            if data == []:
+                sys.stderr.write("[!] Error fetching data\n")
+                sys.exit(-1)
+        print(self.build_feed(data, handle))
+        try:
+            read = input(">>> ")
+        except:
+            print("[!] Error reading command")
+            print("Type 'help' or 'h' to see the help menu")
+            time.sleep(1)
+        # Quit program
+        if read == "quit" or read == "q" or read == "0":
+            print("[*] Gracefully quitting ...")
+            sys.exit(0)
+        elif len(read) == 0:
+            print(self.build_menu())
+            return data, handle
+        # Copy post link to clipboard
+        elif read[0] == "&":
+            try:
+                comment = int(read[1:])
+                if self.copy_to_clipboard(data, comment, "&") != 0:
+                    sys.stderr.write("[!] Read input out of bounds for data size\n")
+                    _ = int("IndexOutOfRange")
+            except ValueError:
+                return data, handle
+        # Scroll reader left
+        elif read[0] == "k":
+            try:
+                c = int(read[1:])
+            except:
+                c = 1
+            handle -= c
+            if handle < 0:
+                handle = 0
+            return data, handle
+        # Scroll reader right
+        elif read[0] == "j" and handle < (self.reads_size // self.page_size):
+            try:
+                c = int(read[1:])
+            except:
+                c = 1
+            handle += c
+            if handle > (self.reads_size // self.page_size) - 1:
+                handle = (self.reads_size // self.page_size) - 1
+        # Refresh cache
+        elif read == "r" or read == "refresh":
+            try:
+                self.scraper.cache.clean()
+            except:
+                pass
+            finally:
+                data = self.scraper()
+                if data == []:
+                    sys.stderr.write("[!] Error fetching data\n")
+                    self.scraper.cache.clean()
+                return self.render(data, 0)
+        # Display help menu
+        elif read == "h" or read == "help":
+            print(self.build_menu())
+            time.sleep(2)
+        # Copy read link to clipboard
+        else:
+            try:
+                read = int(read)
+                if self.copy_to_clipboard(data, read) != 0:
+                    sys.stderr.write("[!] Read input out of bounds for data size\n")
+                    _ = int("IndexOutOfRange")
+            except ValueError:
+                return data, handle
+        return data, handle
+    
+
+    def copy_to_clipboard(self, data, index, mode=""):
+        if index != 0:
+            if mode == "&":
+                index = index * self.data_unit_size - 1
             else:
-                sys.stdout.write(f"[setupEnv] Successfully created venv {self.env_path}\n")
-            if self.pipUpgradePackage("pip") != 0 :
-                sys.stderr.write("[setupEnv] Error updating pip\n")
-            else:
-                sys.stdout.write("[setupEnv] Successfully updated pip\n")
-            if self.REQUIREMENTS:
-                for requirement in self.REQUIREMENTS:
-                    if self.pipInstallPackage(requirement) != 0:
-                        sys.stderr.write(f"[setupEnv] Error installing pip package {requirement}\n")
-                    else:
-                        sys.stdout.write(f"[setupEnv] Successfully installed pip package {requirement}\n")
-            self.pipFreeze()
+                index = index * self.data_unit_size - 2
+            if index > self.reads_size*self.data_unit_size:
+                return 2
+            link = data[index]
+            _, link = link.split(": ")
+            os.system(f"echo {index} {data[index]} >> ./debug.log")
+            cmd = f"echo {link} | xclip -selection clipboard"
+            try:
+                os.system(cmd)
+                return 0
+            except:
+                sys.stderr.write("[!] Error calling subprocess\n")
+                return 3
+        return 1
 
-    def createVenv(self):
-        try:
-            subprocess.run(["python3", "-m", "venv", self.env_path])
-        except:
-            return 1
-        return 0
+    def build_feed(self, data, handle):
+        feed = '\033c'
+        i = 0
+        for line in data[handle * self.page_size * self.data_unit_size:(handle + 1) * self.page_size * self.data_unit_size]:
+            feed += f"\n{line}"
+            i += 1
+            if i == self.data_unit_size:
+                line += "\n"
+                i = 0
+        return feed
 
-    def pipUpgradePackage(self, package: str):
-        try:
-            subprocess.run([os.path.join(self.env_path, 'bin', 'pip'), 'install', '--upgrade', package])
-        except:
-            return 1
-        return 0
-    
-    def sourceVenv(self):
-        try:
-            subprocess.run(self.source_cmd, shell=True, executable="/bin/bash")
-        except:
-            return 1
-        return 0
-    
-    def pipInstallPackage(self, package: str):
-        try:
-            subprocess.run([os.path.join(self.env_path, 'bin', 'pip'), 'install', package])
-        except:
-            return 1
-        return 0
-    
-    def pipFreeze(self):
-        try:
-            subprocess.run(f"{self.source_cmd} && pip freeze", shell=True, executable="/bin/bash")
-        except:
-            return 1
-        return 0
+    def __call__(self):
+        print(self.build_banner())
 
-    def setupEnv(self):
-        os.makedirs(self.env_path, exist_ok=True)
-        if not os.path.exists(self.env_bin):
-            if self.createVenv() != 0:
-                sys.stderr.write(f"[setupEnv] Error creating venv {self.env_path}\n")
-            else:
-                sys.stdout.write(f"[setupEnv] Successfully created venv {self.env_path}\n")
-            if self.pipUpgradePackage("pip") != 0 :
-                sys.stderr.write("[setupEnv] Error updating pip\n")
-            else:
-                sys.stdout.write("[setupEnv] Successfully updated pip\n")
-            if self.REQUIREMENTS:
-                for requirement in self.REQUIREMENTS:
-                    if self.pipInstallPackage(requirement) != 0:
-                        sys.stderr.write(f"[setupEnv] Error installing pip package {requirement}\n")
-                    else:
-                        sys.stdout.write(f"[setupEnv] Successfully installed pip package {requirement}\n")
-            self.pipFreeze()
+        data = self.scraper()
+        self.scraper.cache.clean()
+        if data == []:
+            sys.stderr.write("[!] Error fetching data\n")
+            time.sleep(2)
+            return
+        
+        handle = 0
+        while True:
+            data, handle = self.run(data, handle)
+            time.sleep(1)
 
-    def createVenv(self):
-        try:
-            subprocess.run(["python3", "-m", "venv", self.env_path])
-        except:
-            return 1
-        return 0
 
-    def pipUpgradePackage(self, package: str):
-        try:
-            subprocess.run([os.path.join(self.env_path, 'bin', 'pip'), 'install', '--upgrade', package])
-        except:
-            return 1
-        return 0
-    
-    def sourceVenv(self):
-        try:
-            subprocess.run(self.source_cmd, shell=True, executable="/bin/bash")
-        except:
-            return 1
-        return 0
-    
-    def pipInstallPackage(self, package: str):
-        try:
-            subprocess.run([os.path.join(self.env_path, 'bin', 'pip'), 'install', package])
-        except:
-            return 1
-        return 0
-    
-    def pipFreeze(self):
-        try:
-            subprocess.run(f"{self.source_cmd} && pip freeze", shell=True, executable="/bin/bash")
-        except:
-            return 1
-        return 0
-    
-if __name__ == '__main__':
-    sys.exit(PyBS()())
+if __name__ == "__main__":
+    Reader(reads_size=80, page_size=5, data_unit_size=5)()
