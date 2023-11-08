@@ -341,6 +341,7 @@ alias pst="xclip -o >>"
 alias screenshot="~/.xscripts/screenshot.sh"
 alias clip="xclip -selection clipboard"                                 # copy to clipboard
 alias dualmon="~/.xscripts/dualmon.sh"
+alias destopmon="~/.xscripts/desktopmon.sh"
 #alias pst="echo `xclip -o` >> $1"
 # files
 alias purgemeta="~/scripts/image/purge_metadata.sh"
