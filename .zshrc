@@ -364,7 +364,7 @@ alias tomp3="~/scripts/video/toMp3.sh"
 alias ytdlv="~/scripts/video/ytdl-video.sh"
 alias ytdlp="~/scripts/video/ytdl-playlist.sh"
 # git
-alias gitbc="~/scripts/git/git_branch_checkout.sh"
+alias gitbc="git checkout -b"
 alias gitinit="~/scripts/git/git_init.sh"
 alias gitpush="~/scripts/git/git_push.sh"
 alias gitup="~/scripts/git/git_upstream_push.sh"

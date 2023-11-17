@@ -16,7 +16,8 @@ yes | yay -Syua || exit 7
 # yes |  pacman -Rscn $(yay -Qtdq)
 yes | yay -Yc || exit 8 
 # reboot kernel
-sudo mkinitcpio -p linux || exit 9
+sudo dkms autoinstall || exit 9
+sudo mkinitcpio -p linux || exit 10
 # refresh
 reset 
 sync
