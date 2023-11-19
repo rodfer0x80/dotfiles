@@ -17,7 +17,8 @@ yes | yay -Syua || exit 7
 yes | yay -Yc || exit 8 
 # reboot kernel
 sudo dkms autoinstall || exit 9
-sudo mkinitcpio -p linux || exit 10
+sudo grub-mkconfig -o /boot/grub/grub.cfg || exit 10
+sudo mkinitcpio -P || exit 11
 # refresh
 reset 
 sync
