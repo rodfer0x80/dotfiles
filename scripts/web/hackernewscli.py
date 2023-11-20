@@ -185,9 +185,13 @@ class Reader:
         elif read[0] == "&":
             try:
                 comment = int(read[1:])
-                if self.copy_to_clipboard(data, comment, "&") != 0:
+                if os.getenv("BROWSER", "") != 0:
+                  self.open_browser(data, comment, "&")
+                elif self.copy_to_clipboard(data, comment, "&") != 0:
                     sys.stderr.write("[!] Read input out of bounds for data size\n")
                     _ = int("IndexOutOfRange")
+                else:
+                  raise("Error opening link")
             except ValueError:
                 return data, handle
         # Scroll reader left
@@ -229,13 +233,32 @@ class Reader:
         else:
             try:
                 read = int(read)
+                if os.getenv("BROWSER", "") != 0:
+                  self.open_browser(data, read)
                 if self.copy_to_clipboard(data, read) != 0:
                     sys.stderr.write("[!] Read input out of bounds for data size\n")
                     _ = int("IndexOutOfRange")
             except ValueError:
                 return data, handle
         return data, handle
-    
+
+    def open_browser(self, data, index, mode=""):
+        if index != 0:
+          if mode == "&":
+            index = index * self.data_unit_size - 1
+          else:
+            index = index * self.data_unit_size - 2
+          if index > self.reads_size*self.data_unit_size:
+            return 2
+          link = data[index]
+          _, link = link.split(": ")
+          cmd = f"{os.getenv('BROWSER', '')} {link}"
+          print(cmd)
+          try:
+              os.system(cmd)
+              return 0
+          except:
+              sys.stderr.write("[!] Error calling subprocess\n")
 
     def copy_to_clipboard(self, data, index, mode=""):
         if index != 0:
@@ -247,7 +270,6 @@ class Reader:
                 return 2
             link = data[index]
             _, link = link.split(": ")
-            os.system(f"echo {index} {data[index]} >> ./debug.log")
             cmd = f"echo {link} | xclip -selection clipboard"
             try:
                 os.system(cmd)
