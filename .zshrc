@@ -324,7 +324,7 @@ alias ns="netstat -anp"
 # networks
 alias grepipv4="~/scripts/networks/grepipv4.sh"
 # code editors
-alias code="/opt/VSCode-linux-x64/code 2>&1 >/dev/null &"
+alias code="setsid -f /opt/VSCode-linux-x64/code >/dev/null 2>&1 . &"
 # python3-venv
 PYTHON3_VENV="$HOME/.local/share/python3-venv"
 PYTHON3="$PYTHON3_VENV/bin/python3"
