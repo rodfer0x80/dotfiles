@@ -365,9 +365,13 @@ alias ytdlv="~/scripts/video/ytdl-video.sh"
 alias ytdlp="~/scripts/video/ytdl-playlist.sh"
 # git
 alias gitbc="git checkout -b"
+alias gitreb="git rebase -i origin/master"
 alias gitinit="~/scripts/git/git_init.sh"
 alias gitpush="~/scripts/git/git_push.sh"
 alias gitup="~/scripts/git/git_upstream_push.sh"
+alias gitreset="~/scripts/git/git_reset.sh"
+alias gitsave="git add . && git commit -m"
+alias gitc="git checkout"
 # backup
 alias backup="~/scripts/backup/backup.py"
 alias burniso="~/scripts/backup/burn_iso.sh"
