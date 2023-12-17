@@ -15,6 +15,7 @@ endfunction
 nnoremap <C-X><C-T> :call Toggle_transparent_background()<CR>
 ]])
 
+
 -- Basic setup
 vim.cmd([[
 "" Encoding
@@ -22,9 +23,6 @@ set encoding=utf-8
 set fileencoding=utf-8
 set fileencodings=utf-8
 set ttyfast
-
-"" Fix backspace indent
-set backspace=indent,eol,start
 
 "" Tabs. May be overridden by autocmd rules
 set tabstop=2

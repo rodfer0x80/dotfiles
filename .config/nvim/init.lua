@@ -1,2 +1,2 @@
 require("configs")
-print("hello")
+print("hack the planet")
