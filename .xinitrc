@@ -6,7 +6,7 @@ export _JAVA_AWT_WM_NONREPARENTING=1
 setxkbmap -layout uk
 
 # enable desktop mode monitor
-# setsid -f ~/.xscripts/desktopmon.sh &
+#setsid -f ~/.xscripts/desktopmon.sh &
 
 # Cursor icon off when unused
 unclutter &
@@ -18,7 +18,9 @@ feh --bg-fill ~/.xbgs/pirate.jpg || ~/.xscripts/random_bg.py
 xcompmgr -n &
 
 # DWM bar 
-~/.xscripts/toolbar.sh  &
+~/.xscripts/toolbar.sh &
+# TuneD
+~/.xscripts/tuned.sh &
 
 # DWM run
 exec dwm

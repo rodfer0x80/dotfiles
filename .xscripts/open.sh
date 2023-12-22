@@ -15,10 +15,10 @@ open()
     case "$url" in 
         *mkv|*webm|*mp4|*mp3|*youtube.com/watch|*youtube.com/playlist*|*youtube.com/shorts|*youtu.be|*hooktube.com|*bichute.com|*videos.lukesmith.xyz|*odysee.com*)
             setsid -f mpv -quiet "$url" >/dev/null 2>&1 ;;
-        ^http*png|^http*jpg|http*jpe|http*jpeg|http*gif|^https*png|^https*jpg|https*jpe|https*jpeg|https*gif)
-            curl -sL "$url" > "/tmp/$(echo "$url" | sed "s/.*\///;s/%20/ /g")";  setsid -f sxiv -a "/tmp/$(echo "$url" | sed "s/.*\///;s/%20/ /g")" >/dev/null 2>&1 & ;;
-        *png|*jpg|*jpeg|*gif)
-            setsid -f sxiv -a "$url" >/dev/null 2>&1 & ;;
+        ^http*png|^http*jpg|http*jpe|http*jpeg|http*svg|http*bmp|https*svg|https*svg|http*gif|^https*png|^https*jpg|https*jpe|https*jpeg|https*gif)
+            curl -sL "$url" > "/tmp/$(echo "$url" | sed "s/.*\///;s/%20/ /g")";  setsid -f display -a "/tmp/$(echo "$url" | sed "s/.*\///;s/%20/ /g")" >/dev/null 2>&1 & ;;
+        *png|*jpg|*jpeg|*bmp|*svg|*gif)
+            setsid -f display "$url" >/dev/null 2>&1 & ;;
         ^http*pdf|^https*pdf) 
             curl -sL "$url" > "/tmp/$(echo "$url" | sed "s/.*\///;s/%20/ /g")" &&  setsid -f zathura "/tmp/$(echo "$url" | sed "s/.*\///;s/%20/ /g")" >/dev/null 2>&1 &;;
         *pdf)

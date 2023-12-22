@@ -28,7 +28,7 @@ get_battery()
 	if [ -d /sys/class/power_supply/BAT0 ]; then
 		capacity=$(cat /sys/class/power_supply/BAT0/capacity)
 		charging=$(cat /sys/class/power_supply/BAT0/status)
-        if [[ "$charging" != "Discharging" ]]; then
+    if [[ "$charging" != "Discharging" ]]; then
 			ICON="$CHARGING_ICON "
 		elif [[ $capacity -le 20 ]]; then
 			ICON="$WARNING_ICON "
