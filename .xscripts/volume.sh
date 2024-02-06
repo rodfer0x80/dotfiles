@@ -10,7 +10,7 @@ get_volume(){
     volume_right=$(amixer get Master | grep "Right:" | cut -d '[' -f2 | cut -d ']' -f1 | cut -d '%' -f1)
     if [[ -z "$volume_right" ]]; then
         volume=$(amixer get Master | grep "Mono" | cut -d '[' -f2 | cut -d ']' -f1 | cut -d ":" -f1 | cut -d '%' -f1 | cut -d " " -f1 | tr -d '\n')
-        vstatus=$(amixer get Master | grep "Mono" | cut -d '[' -f4 | cut -d ']' -f1)
+        vstatus=$(amixer get Master | grep "Mono" | cut -d '[' -f4 | cut -d ']' -f1 | cut -d' ' -f6 | tr -d '\n')
         if [[ "${vstatus}" == 'off' ]]; then
             echo "$VOLUME_MUTED_ICON $volume%"
             exit 0
