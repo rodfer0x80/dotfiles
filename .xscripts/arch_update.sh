@@ -16,9 +16,9 @@ yes | yay -Syua || exit 7
 # yes |  pacman -Rscn $(yay -Qtdq)
 yes | yay -Yc || exit 8 
 # reboot kernel
-sudo dkms autoinstall || exit 9
-sudo grub-mkconfig -o /boot/grub/grub.cfg || exit 10
-sudo mkinitcpio -P || exit 11
+#sudo dkms autoinstall || exit 9
+sudo grub-mkconfig -o /boot/grub/grub.cfg || exit 9
+sudo mkinitcpio -P || exit 10
 # refresh
 reset 
 sync

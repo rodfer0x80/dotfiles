@@ -249,6 +249,10 @@ export LANG=en_GB.UTF-8
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_DATA_HOME="$HOME/.local/share"
+
+# Qemu
+ export QEMU_LD_PREFIX=/usr/aarch64-linux-gnu/
+
 # Colours
 autoload -U colors && colors
 # nerd fonts
@@ -328,7 +332,7 @@ alias code="setsid -f /opt/VSCode-linux-x64/code >/dev/null 2>&1 . &"
 # python3-venv
 PYTHON3_VENV="$HOME/.local/share/python3-venv"
 PYTHON3="$PYTHON3_VENV/bin/python3"
-alias pyvenv="rm -rf $PYTHON3_VENV/* ; python3 -m venv $PYTHON3_VENV"
+alias pyvenv="yes | rm -rf $PYTHON3_VENV/* ; python3 -m venv $PYTHON3_VENV"
 alias pylint="$PYTHON3_VENV/bin/python3 -m flake8"
 alias py="$PYTHON3_VENV/bin/python3"
 # system
