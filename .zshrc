@@ -276,7 +276,7 @@ else
 fi
 export BROWSER="firefox"
 export OPEN_BROWSER="firejail --private=/opt/firefox firefox"
-export EDITOR="vim"
+export EDITOR="nvim"
 
 
 ## Paths
@@ -335,6 +335,7 @@ PYTHON3="$PYTHON3_VENV/bin/python3"
 alias pyvenv="yes | rm -rf $PYTHON3_VENV/* ; python3 -m venv $PYTHON3_VENV"
 alias pylint="$PYTHON3_VENV/bin/python3 -m flake8"
 alias py="$PYTHON3_VENV/bin/python3"
+alias pypip="$PYTHON3_VENV/bin/python3 -m pip"
 # system
 alias mva="~/scripts/system/mva.sh"
 alias binit="yes | mv /opt/firefox/Downloads/* ~/downloads/* ~/rubbish/"
@@ -363,6 +364,7 @@ alias spleeter="~/scripts/audio/spleeter.sh"
 # video
 alias autosubtitle="~/scripts/video/autosubtitle/__main__.py"
 alias webm2mp3="~/scripts/video/webm2mp3.sh"
+alias cwd-webm2mp3='for file in $(ls); do [ -f "$file" ] && webm2mp3 "$file";done'
 alias imgr90="~/scripts/video/img_rotate_90.sh"
 alias tomp3="~/scripts/video/toMp3.sh"
 alias ytdlv="~/scripts/video/ytdl-video.sh"

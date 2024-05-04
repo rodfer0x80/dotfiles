@@ -224,7 +224,7 @@ class Reader:
                 if data == []:
                     sys.stderr.write("[!] Error fetching data\n")
                     self.scraper.cache.clean()
-                return self.render(data, 0)
+                return data, 0 #self.render(data, 0)
         # Display help menu
         elif read == "h" or read == "help":
             print(self.build_menu())
