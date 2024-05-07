@@ -14,7 +14,6 @@ discharging_profile="balanced"
 
 tune()
 {
-  charging=$(cat /sys/class/power_supply/BAT0/status)
 	if [ -d /sys/class/power_supply/BAT0 ]; then
 		charging=$(cat /sys/class/power_supply/BAT0/status)
     current_profile=$(get_active_profile)

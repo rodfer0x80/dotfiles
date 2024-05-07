@@ -332,11 +332,16 @@ alias code="setsid -f /opt/VSCode-linux-x64/code >/dev/null 2>&1 . &"
 # python3-venv
 PYTHON3_VENV="$HOME/.local/share/python3-venv"
 PYTHON3="$PYTHON3_VENV/bin/python3"
-alias pyvenv="yes | rm -rf $PYTHON3_VENV/* ; python3 -m venv $PYTHON3_VENV"
-alias pylint="$PYTHON3_VENV/bin/python3 -m flake8"
+PIP3="$PYTHON3_VENV/bin/pip3"
+alias pyvenv="yes | rm -rf $PYTHON3_VENV/* ; python -m pip cache purge; python3 -m venv $PYTHON3_VENV"
 alias py="$PYTHON3_VENV/bin/python3"
 alias pypip="$PYTHON3_VENV/bin/python3 -m pip"
-# system
+alias pylint="$PYTHON3_VENV/bin/python3 -m pip install flake8; $PYTHON3_VENV/bin/python3 -m flake8"
+alias pyfmt="$PYTHON3_VENV/bin/python3 -m pip install autopep8; $PYTHON3_VENV/bin/python3 -m autopep8"
+alias pyclear='find . -name "__pycache__" -type d -exec rm -rf {} +'
+alias autopep="autopep8 --recursive --in-place --indent-size 2 --ignore E226,E24,E704,W503 --max-line-length 79 .
+"
+#system
 alias mva="~/scripts/system/mva.sh"
 alias binit="yes | mv /opt/firefox/Downloads/* ~/downloads/* ~/rubbish/"
 alias bincl="yes | rm -rf ~/rubbish/*"
@@ -362,8 +367,10 @@ alias wav2mp3="~/scripts/audio/wav2mp3.sh"
 alias bluetooth="~/.xscripts/bluetooth.sh"
 alias spleeter="~/scripts/audio/spleeter.sh"
 # video
-alias autosubtitle="~/scripts/video/autosubtitle/__main__.py"
+alias autosubtitle="pypip install -r ~/scripts/video/autosubtitle/requirements.txt; py ~/scripts/video/autosubtitle/__main__.py"
 alias webm2mp3="~/scripts/video/webm2mp3.sh"
+alias webm2mkv="~/scripts/video/webm2mkv.sh"
+alias webm2mov="~/scripts/video/webm2mov.sh"
 alias cwd-webm2mp3='for file in $(ls); do [ -f "$file" ] && webm2mp3 "$file";done'
 alias imgr90="~/scripts/video/img_rotate_90.sh"
 alias tomp3="~/scripts/video/toMp3.sh"
