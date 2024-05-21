@@ -341,6 +341,7 @@ alias pyfmt="$PYTHON3_VENV/bin/python3 -m pip install autopep8; $PYTHON3_VENV/bi
 alias pyclear='find . -name "__pycache__" -type d -exec rm -rf {} +'
 alias autopep="autopep8 --recursive --in-place --indent-size 2 --ignore E226,E24,E704,W503 --max-line-length 79 .
 "
+alias ruf="ruff format --config ruff.toml --preview; ruff check --config ruff.toml --preview"
 #system
 alias mva="~/scripts/system/mva.sh"
 alias binit="yes | mv /opt/firefox/Downloads/* ~/downloads/* ~/rubbish/"
@@ -392,3 +393,4 @@ alias backup="~/scripts/backup/backup.py"
 alias burniso="~/scripts/backup/burn_iso.sh"
 # monitoring
 alias cputemp="~/.xscripts/cputemp.sh | cut -d' ' -f3"
+alias tempram="mkdir -p /mnt/ram; mount -t tmpfs tmpfs /mnt/ram -o size=8192M"
