@@ -17,7 +17,7 @@
 # --
 
 
-# models :: 0 -> small || >0 -> full 
+# models :: 1 -> small || >0 -> full 
 MODEL=0
 # --
 VOSK_MODEL_PATH="/home/rodfer/.cache/music_assistant/models"

@@ -29,7 +29,7 @@ open()
             setsid -f "$BROWSER" "$url" >/dev/null 2>&1 & ;;
         ^http*odg|^http*docx)
             curl -sL "$url" > "/tmp/$(echo "$url" | sed "s/.*\///;s/%20/ /g")" &&  setsid -f libreoffice "/tmp/$(echo "$url" | sed "s/.*\///;s/%20/ /g")" >/dev/null 2>&1 &;;
-        *odg|*docx)
+        *odg|*docx|*odt)
             setsid -f libreoffice "$url" >/dev/null 2>&1 & ;;
         *)
             return 2

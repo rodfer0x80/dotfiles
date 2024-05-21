@@ -371,7 +371,7 @@ alias autosubtitle="pypip install -r ~/scripts/video/autosubtitle/requirements.t
 alias webm2mp3="~/scripts/video/webm2mp3.sh"
 alias webm2mkv="~/scripts/video/webm2mkv.sh"
 alias webm2mov="~/scripts/video/webm2mov.sh"
-alias cwd-webm2mp3='for file in $(ls); do [ -f "$file" ] && webm2mp3 "$file";done'
+alias cwd-webm2mp3='for file in $(ls); do [ -f "$file" ] && ~/scripts/video/webm2mp3.sh "$file";done'
 alias imgr90="~/scripts/video/img_rotate_90.sh"
 alias tomp3="~/scripts/video/toMp3.sh"
 alias ytdlv="~/scripts/video/ytdl-video.sh"
@@ -388,4 +388,5 @@ alias gitc="git checkout"
 # backup
 alias backup="~/scripts/backup/backup.py"
 alias burniso="~/scripts/backup/burn_iso.sh"
-
+# monitoring
+alias cputemp="~/.xscripts/cputemp.sh | cut -d' ' -f3"

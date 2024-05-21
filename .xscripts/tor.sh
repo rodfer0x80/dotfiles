@@ -3,7 +3,7 @@
 # Prints if the tor service is enabled or not
 # Requires tor
 
-TOR_ENABLED='﨩'
+TOR_ENABLED=''
 TOR_DISABLED=''
 
 get_tor()
