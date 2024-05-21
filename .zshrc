@@ -376,6 +376,8 @@ alias imgr90="~/scripts/video/img_rotate_90.sh"
 alias tomp3="~/scripts/video/toMp3.sh"
 alias ytdlv="~/scripts/video/ytdl-video.sh"
 alias ytdlp="~/scripts/video/ytdl-playlist.sh"
+alias ytdla="~/scripts/video/ytdl-audio.sh"
+alias ytdlap="~/scripts/video/ytdl-audio-playlist.sh"
 # git
 alias gitbc="git checkout -b"
 alias gitreb="git rebase -i origin/master"
