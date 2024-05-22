@@ -392,5 +392,5 @@ alias gitc="git checkout"
 alias backup="~/scripts/backup/backup.py"
 alias burniso="~/scripts/backup/burn_iso.sh"
 # monitoring
-alias cputemp="~/.xscripts/cputemp.sh | cut -d' ' -f3"
+alias cputemp="~/.xscripts/cputemp.sh"
 alias tempram="mkdir -p /mnt/ram; mount -t tmpfs tmpfs /mnt/ram -o size=8192M"

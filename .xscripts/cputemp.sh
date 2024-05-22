@@ -5,7 +5,7 @@
 get_cputemp()
 {
     PREFIX=' '
-    FIRE=' '
+    FIRE='󰈸 '
     WARNING=' '
 
     WARM_LEVEL=60
@@ -18,10 +18,10 @@ get_cputemp()
 	#CPU_TEMP="$(sensors | grep temp1 | awk 'NR==1{gsub("+", " "); gsub("\\..", " "); print $2}')"
     TEMP=$(echo $CPU_TEMP | cut -d"." -f1)
     if [[ $TEMP -ge $WARNING_LEVEL ]]; then
-		PREFIX="$PREFIX$WARNING"
-	elif [[ $TEMP -ge $WARM_LEVEL ]]; then
-		PREFIX="$PREFIX$FIRE"
-	fi
+		  PREFIX="$PREFIX$WARNING"
+	  elif [[ $TEMP -ge $WARM_LEVEL ]]; then
+		  PREFIX="$PREFIX$FIRE"
+    fi
 
     echo "$PREFIX$CPU_TEMP"
 }
