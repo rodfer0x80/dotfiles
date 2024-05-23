@@ -285,7 +285,7 @@ PATH=$(echo $PATH | cut -d":" -f3):$(echo $PATH | cut -d":" -f1-2):$(echo $PATH 
 # python3 pip user binaries
 export PATH=$PATH:"$HOME/.local/bin"
 # golang user binaries
-export PATH=$PATH:"$HOME/go/bin"
+export PATH=$PATH:"$HOME/.go/bin"
 # java
 #export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
 # ruby
