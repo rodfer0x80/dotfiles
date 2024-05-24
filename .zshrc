@@ -345,7 +345,7 @@ alias ruf="ruff format --config ruff.toml --preview; ruff check --config ruff.to
 #system
 alias mva="~/scripts/system/mva.sh"
 alias binit="yes | mv /opt/firefox/Downloads/* ~/downloads/* ~/rubbish/"
-alias bincl="yes | rm -rf ~/rubbish/*"
+alias bincl="yes | rm -rf ~/rubbish/* ; yes | rm -rf ~/rubbish/.*"
 alias sus="systemctl suspend"
 alias hibernate="systemctl hibernate"
 alias update="~/.xscripts/arch_update.sh"
