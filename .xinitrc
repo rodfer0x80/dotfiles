@@ -3,7 +3,8 @@ export AWT_TOOLKIT=MToolkit
 export _JAVA_AWT_WM_NONREPARENTING=1
 
 # Keyboard GB
-setxkbmap -layout uk
+setxkbmap -layout gb 
+xmodmap ~/.Xmodmap
 
 # enable desktop mode monitor
 #setsid -f ~/.xscripts/desktopmon.sh &
@@ -20,7 +21,7 @@ xcompmgr -n &
 # DWM bar 
 ~/.xscripts/toolbar.sh &
 # TuneD
-~/.xscripts/tuned.sh &
+#~/.xscripts/tuned.sh &
 
 # DWM run
 exec dwm
