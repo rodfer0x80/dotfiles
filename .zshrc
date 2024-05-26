@@ -338,10 +338,11 @@ alias py="$PYTHON3_VENV/bin/python3"
 alias pypip="$PYTHON3_VENV/bin/python3 -m pip"
 alias pylint="$PYTHON3_VENV/bin/python3 -m pip install flake8; $PYTHON3_VENV/bin/python3 -m flake8"
 alias pyfmt="$PYTHON3_VENV/bin/python3 -m pip install autopep8; $PYTHON3_VENV/bin/python3 -m autopep8"
+alias pytest="$PYTHON3_VENV/bin/pytest"
 alias pyclear='find . -name "__pycache__" -type d -exec rm -rf {} +'
 alias autopep="autopep8 --recursive --in-place --indent-size 2 --ignore E226,E24,E704,W503 --max-line-length 79 .
 "
-alias ruf="ruff format --config ruff.toml --preview; ruff check --config ruff.toml --preview"
+alias ruf="ruff format --config $XDG_CONFIG_HOME/ruff/ruff.toml --preview; ruff check --config $XDG_CONFIG_HOME/ruff/ruff.toml --preview"
 #system
 alias mva="~/scripts/system/mva.sh"
 alias binit="yes | mv /opt/firefox/Downloads/* ~/downloads/* ~/rubbish/"

@@ -226,9 +226,9 @@ set fileencodings=utf-8
 set ttyfast
 
 "" Tabs. May be overridden by autocmd rules
-set tabstop=2
-set softtabstop=0
-set shiftwidth=2
+set tabstop=8
+set softtabstop=8
+set shiftwidth=8
 set expandtab
 
 "" Map leader to ,
