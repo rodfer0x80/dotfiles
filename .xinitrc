@@ -6,7 +6,7 @@ export _JAVA_AWT_WM_NONREPARENTING=1
 setxkbmap -layout gb 
 xmodmap ~/.Xmodmap
 
-# enable desktop mode monitor
+# Enable desktop mode monitor
 #setsid -f ~/.xscripts/desktopmon.sh &
 
 # Cursor icon off when unused
@@ -20,7 +20,8 @@ xcompmgr -n &
 
 # DWM bar 
 ~/.xscripts/toolbar.sh &
-# TuneD
+
+# TuneD power management
 #~/.xscripts/tuned.sh &
 
 # DWM run
