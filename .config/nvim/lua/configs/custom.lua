@@ -28,10 +28,10 @@ set encoding=utf-8
 set fileencoding=utf-8
 set fileencodings=utf-8
 set ttyfast
-"" It's 8 or nothing 
-set tabstop=8
-set softtabstop=8
-set shiftwidth=8
+"" It's 2 or nothing 
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
 set expandtab
 set smartindent
 "" buffers
