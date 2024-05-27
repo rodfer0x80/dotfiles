@@ -4,7 +4,6 @@ export _JAVA_AWT_WM_NONREPARENTING=1
 
 # Keyboard GB
 setxkbmap -layout gb 
-xmodmap ~/.Xmodmap
 
 # Enable desktop mode monitor
 #setsid -f ~/.xscripts/desktopmon.sh &

@@ -263,9 +263,6 @@ PYTHON3="$PYTHON3_VENV/bin/python3"
 alias pyvenv="rm -rf $PYTHON3_VENV/* ; python3 -m venv $PYTHON3_VENV"
 alias pylint="$PYTHON3_VENV/bin/python3 -m flake8"
 alias py="$PYTHON3_VENV/bin/python3"
-# system
-alias pst="xclip -o >>"
-alias clip="xclip -selection clipboard"                                 # copy to clipboard
 # git
 alias gitbc="git checkout -b"
 alias gitreb="git rebase -i origin/master"
