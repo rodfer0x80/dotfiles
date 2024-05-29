@@ -343,10 +343,14 @@ alias pyclear='find . -name "__pycache__" -type d -exec rm -rf {} +'
 alias autopep="autopep8 --recursive --in-place --indent-size 2 --ignore E226,E24,E704,W503 --max-line-length 79 .
 "
 alias ruf="ruff format --config $XDG_CONFIG_HOME/ruff/ruff.toml --preview; ruff check --config $XDG_CONFIG_HOME/ruff/ruff.toml --preview"
+#troubleshoot
+alias journal="sudo journalctl -p 3 -xe"
+alias sysfail="systemctl --failed; sudo systemctl --failed"
 #system
 alias mva="~/scripts/system/mva.sh"
 alias binit="yes | mv /opt/firefox/Downloads/* ~/downloads/* ~/rubbish/"
 alias bincl="yes | rm -rf ~/rubbish/* ; yes | rm -rf ~/rubbish/.*"
+alias cachecl="yes | rm -rf ~/.cache/* ; yes | rm -rf ~/.cache/.*"
 alias sus="systemctl suspend"
 alias hibernate="systemctl hibernate"
 alias update="~/.xscripts/arch_update.sh"
