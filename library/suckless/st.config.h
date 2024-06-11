@@ -6,7 +6,7 @@
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
 static char *font = "Hack Nerd Font Mono:pixelsize=26:antialias=true:autohint=true";
-static int borderpx = 2;
+static int borderpx = 1;
 
 /*
  * What program is execed by st depends of these precedence rules:
@@ -45,7 +45,7 @@ int allowaltscreen = 1;
 
 /* allow certain non-interactive (insecure) window operations such as:
    setting the clipboard text */
-int allowwindowops = 0;
+int allowwindowops = 1;
 
 /*
  * draw latency range in ms - from new content/keypress/etc until drawing.
@@ -162,8 +162,8 @@ static unsigned int rows = 24;
  * Default width and height (including borders!)
  */
 
-static unsigned int width = 564;
-static unsigned int height = 364;
+static unsigned int width = 1900;
+static unsigned int height = 880;
 
 /*
  * Default colour and shape of the mouse cursor

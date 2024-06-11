@@ -20,16 +20,16 @@
 
 
 /* appearance */
-static const unsigned int borderpx  = 4;        /* border pixel of windows */
-static const unsigned int snap      = 16;       /* snap pixel */
+static const unsigned int borderpx  = 1;        /* border pixel of windows */
+static const unsigned int snap      = 1;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const int user_bh            = 0;        /* 0 means that dwm will calculate bar height, >= 1 means dwm will user_bh as bar height */
 static const char *fonts[]          = { 
-    "Hack Nerd Font Mono:pixelsize=28:antialias=true:autohint=true",
-    "JoyPixels:pixelsize=20:antialias=true:autohint=true",    
+    "Hack Nerd Font Mono:pixelsize=32:antialias=true:autohint=true",
+    "JoyPixels:pixelsize=24:antialias=true:autohint=true",    
 };
-static const char dmenufont[]       = "Hack Nerd Font Mono:pixelsize=28:antialias=true;autohind=true";
+static const char dmenufont[]       = "Hack Nerd Font Mono:pixelsize=32:antialias=true;autohind=true";
 static const char col_gray1[]       = "#cb0000";
 static const char col_gray2[]       = "#333333";
 static const char col_gray3[]       = "#cccccc";
@@ -43,7 +43,7 @@ static const char *colors[][3]      = {
 };
 
 /* tagging */
-static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+static const char *tags[] = { "[1]", "[2]", "[3]", "[4]" };
 
 static const Rule rules[] = {
 	/* xprop(1):
