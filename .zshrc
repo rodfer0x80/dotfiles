@@ -373,6 +373,7 @@ alias rmblanks="~/scripts/system/rmblanks.py"
 alias open="~/.xscripts/open.sh"
 alias hackernews="~/scripts/web/hackernewscli.py"
 alias wdl="~/scripts/web/wdl.sh"
+alias portkill="~/scripts/networks/port_kill.sh"
 # audio
 alias wav2mp3="~/scripts/audio/wav2mp3.sh"
 alias bluetooth="~/.xscripts/bluetooth.sh"

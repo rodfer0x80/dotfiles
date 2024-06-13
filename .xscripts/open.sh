@@ -36,4 +36,4 @@ open()
     esac
 }
 
-open $1
+open "$1"

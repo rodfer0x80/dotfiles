@@ -109,6 +109,7 @@ static const char *suspend[]  = { "systemctl", "suspend", NULL };
 static const char *nextbg[]  = { "/bin/python3", "/home/rodfer/.xscripts/next_bg.py", NULL };
 static const char *bluetooth[] = { "/bin/sh", "home/rodfer/.xscripts/bluetooth.sh", NULL };
 static const char *cinema[] = { "kodi", NULL };
+static const char *discord[] = { "discord", NULL };
 
 
 static Key keys[] = {
@@ -129,7 +130,8 @@ static Key keys[] = {
     { MODKEY|ShiftMask,             XK_b,           spawn,          {.v = bluetooth } },
     { MODKEY|ShiftMask,             XK_x,           spawn,          {.v = kvm } },
     { MODKEY|ShiftMask,             XK_z,           spawn,          {.v = keepassxc } },
-    { MODKEY|ShiftMask,             XK_k,           spawn,          {.v = cinema } },
+    { MODKEY|ShiftMask,             XK_n,           spawn,          {.v = cinema } },
+    { MODKEY|ShiftMask,             XK_k,           spawn,          {.v = discord } },
     { 0,                            XK_Home,        spawn,          {.v = nextbg } },
 	{ MODKEY|ShiftMask,             XK_Esc,         spawn,          {.v = shutdown } },
     { MODKEY,                       XK_Esc,         spawn,          {.v = suspend } },
