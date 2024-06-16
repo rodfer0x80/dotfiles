@@ -14,6 +14,7 @@
 #define XK_DecLight        0x1008ff03 // Fn Light-
 #define XK_Home            0x0000ff50 // Home
 #define XK_Bluetooth       0x1008ff94 // Bluetooth 
+#define XK_Microphone      0x1008ffb2 // Microphone
 // F1-12 conversions
 //#define XK_F1              XK_ToggleSound
 //#define XK_F2              XK_DecSound
@@ -84,6 +85,7 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "setsid", "-f", "st", NULL };
 static const char *firefox[]  = { "setsid", "-f", "firejail", "--private=/opt/firefox", "firefox", NULL };
+static const char *chrome[]  = { "setsid", "-f", "firejail", "--private=/opt/chrome", "google-chrome-stable", NULL };
 static const char *obs[]  = { "setsid", "-f", "obs", NULL };
 static const char *thunderbird[]  = { "setsid", "-f", "thunderbird", NULL };
 static const char *gimp[]  = { "setsid", "-f", "gimp", NULL };
@@ -101,6 +103,7 @@ static const char *declight[]  = { "xbacklight", "-dec", "5", NULL };
 static const char *togglesound[]  = { "/home/rodfer/.xscripts/sound_toggle.sh", NULL };
 static const char *incsound[]  = { "/home/rodfer/.xscripts/sound_inc.sh", NULL };
 static const char *decsound[]  = { "/home/rodfer/.xscripts/sound_dec.sh", NULL };
+static const char *mictoggle[]  = { "/home/rodfer/.xscripts/mic_toggle.sh", NULL };
 static const char *shutdown[]  = { "shutdown", "now", NULL };
 //static const char *hibernate[]  = { "systemctl", "hibernate", NULL };
 static const char *suspend[]  = { "systemctl", "suspend", NULL };
@@ -114,9 +117,10 @@ static Key keys[] = {
 	{ MODKEY,                       XK_p,           spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_Return,      spawn,          {.v = termcmd } },
     { MODKEY|ShiftMask,             XK_f,           spawn,          {.v = firefox } },
+    { MODKEY|ShiftMask,             XK_g,           spawn,          {.v = chrome } },
     { MODKEY|ShiftMask,             XK_p,           spawn,          {.v = qbittorrent } },
     { MODKEY|ShiftMask,             XK_e,           spawn,          {.v = thunderbird } },
-    { MODKEY|ShiftMask,             XK_g,           spawn,          {.v = gimp } },
+    { MODKEY|ShiftMask,             XK_i,           spawn,          {.v = gimp } },
     { MODKEY|ShiftMask,             XK_a,           spawn,          {.v = ardour } },
     { MODKEY|ShiftMask,             XK_t,           spawn,          {.v = torbrowser } },
     { MODKEY|ShiftMask,             XK_l,           spawn,          {.v = obs } },
@@ -136,6 +140,7 @@ static Key keys[] = {
     { 0,                            XK_DecSound,    spawn,          {.v = decsound } },
     { 0,                            XK_IncSound,    spawn,          {.v = incsound } },
     { 0,                            XK_Bluetooth,   spawn,          {.v = bluetooth } },
+    { 0,                            XK_Microphone,  spawn,          {.v = mictoggle } },
 	{ MODKEY,                       XK_DecSound,    mpdchange,      {.i = -1} },
 	{ MODKEY,                       XK_IncSound,    mpdchange,      {.i = +1} },
 	{ MODKEY,                       XK_ToggleSound, mpdcontrol,     {0} },
