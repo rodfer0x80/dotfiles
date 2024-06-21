@@ -3,6 +3,7 @@
 # refresh
 reset
 sync
+sudo systemctl daemon-reload
 # update repo file metadata
 yes | sudo pkgfile -u || exit 1
 # force refresh database
@@ -27,5 +28,6 @@ yes | yay -Sc || exit 9
 sudo grub-mkconfig -o /boot/grub/grub.cfg || exit 10
 sudo mkinitcpio -P || exit 11
 # refresh
+sudo systemctl daemon-reload
 sync
 reset 

@@ -256,8 +256,6 @@ export XDG_DATA_HOME="$HOME/.local/share"
 # Colours
 autoload -U colors && colors
 # nerd fonts
-# start mpd
-mpd
 # Spawn
 neofetch 2>/dev/null
 
