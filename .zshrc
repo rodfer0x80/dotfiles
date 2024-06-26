@@ -347,6 +347,7 @@ alias ruf="ruff format --config $XDG_CONFIG_HOME/ruff/ruff.toml --preview; ruff 
 alias journal="sudo journalctl -p 3 -xe"
 alias sysfail="systemctl --failed; sudo systemctl --failed"
 #system
+alias timer="~/scripts/system/timer.sh"
 alias mva="~/scripts/system/mva.sh"
 alias binit="$HOME/scripts/rubbish/binit.sh"
 alias bincl="$HOME/scripts/rubbish/bincl.sh"
@@ -375,6 +376,7 @@ alias hackernews="~/scripts/web/hackernewscli.py"
 alias wdl="~/scripts/web/wdl.sh"
 alias portkill="~/scripts/networks/port_kill.sh"
 # audio
+alias mpdstop="systemctl --user stop mpd.service"
 alias wav2mp3="~/scripts/audio/wav2mp3.sh"
 alias bluetooth="~/.xscripts/bluetooth.sh"
 alias spleeter="~/scripts/audio/spleeter.sh"
@@ -390,6 +392,10 @@ alias ytdlv="~/scripts/video/ytdl-video.sh"
 alias ytdlp="~/scripts/video/ytdl-playlist.sh"
 alias ytdla="~/scripts/audio/ytdl-audio.sh"
 alias ytdlap="~/scripts/audio/ytdl-audio-playlist.sh"
+# compilers
+## enable shadow stack to prevent memory RCE exploits
+alias gcc="gcc -mshstk"
+alias clang="clang -mshstk"
 # git
 alias gitbc="git checkout -b"
 alias gitreb="git rebase -i origin/master"
