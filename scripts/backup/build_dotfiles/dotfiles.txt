@@ -1,0 +1,14 @@
+.xinitrc
+.vimrc
+.zshrc
+.bashrc
+.gdbinit
+.editorconfig
+.tmux.conf
+.zprofile
+.zsh_logout
+.xbgs
+.xscripts
+scripts
+vms
+library

@@ -1,0 +1,5 @@
+.config/neofetch
+.config/nvim
+.config/mpd
+.config/pulse
+.config/ruff

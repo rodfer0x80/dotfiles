@@ -1,0 +1,5 @@
+documents
+dotfiles
+.ssh
+.gnupg
+.password-store
