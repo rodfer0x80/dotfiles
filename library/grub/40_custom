@@ -3,18 +3,37 @@ exec tail -n +3 $0
 # This file provides an easy way to add custom menu entries.  Simply type the
 # menu entries you want to add after this comment.  Be careful not to change
 # the 'exec tail' line above.
+
+set timeout=5
+
 menuentry "UEFI Shell" {
 	insmod fat
 	insmod chain
 	search --no-floppy --set-root --file /shellx64.efi
 	chainloader /shellx64.efi
 }
+
+menuentry "Normal Boot" {
+	echo "Booting into normal mode..."
+	linux /vmlinuz-linux root=/dev/nvme0n1p3
+	initrd /initramfs-linux.img
+	boot
+}
+
+
+menuentry "Recovery Boot" {
+	echo "Booting into recovery mode..."
+	linux /vmlinuz-linux root=/dev/nvme0n1p3
+	initrd /initramfs-linux-fallback.img
+	boot
+}
+
 menuentry "Reboot" {
 	echo "Rebooting ..."
-	halt
+	reboot
 }
 menuentry "Shutdown" {
 	echo "Shutting down..."
-	halt
+	poweroff
 }
 

@@ -19,8 +19,8 @@ build_dotfiles() {
   mv "$DOTFILES" "$DOTFILES_BAK" || exit -2 
 	mkdir -p "$DOTFILES"
 	mkdir -p "$DOTFILES_CONFIG" 
-	xargs -a "$DOTFILES_LIST"  cp -r -t "$DOTFILES" || exit -3
-	xargs -a "$DOTFILES_CONFIG_LIST" cp -r -t "$DOTFILES_CONFIG" || exit -4
+	xargs -a <(sed "s|^|$HOME/|" "$DOTFILES_LIST") cp -r -t "$DOTFILES" || exit -3
+	xargs -a <(sed "s|^|$HOME/|" "$DOTFILES_CONFIG_LIST") cp -r -t "$DOTFILES_CONFIG" || exit -4
   printf "[*] Done building dotfiles\n"
 }
 

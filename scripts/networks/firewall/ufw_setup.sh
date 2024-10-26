@@ -9,3 +9,4 @@ ufw allow https/tcp
 ufw logging on
 ufw status verbose
 echo "Y" | ufw enable
+ufw reload

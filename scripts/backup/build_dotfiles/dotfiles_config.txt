@@ -3,3 +3,4 @@
 .config/mpd
 .config/pulse
 .config/ruff
+.config/rofi

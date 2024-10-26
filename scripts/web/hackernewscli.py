@@ -9,19 +9,20 @@ import sys
 import time
 import subprocess
 
+
 class Cache:
     def __init__(self, cache_file=None):
         self.cache_timout_seconds = 30 * 60
 
-        self.cache_dir = f"{os.environ['HOME']}/.cache/{__file__.split('/')[-1][:-3]}" # ~/.cache/hackernewscli
+        # ~/.cache/hackernewscli
+        self.cache_dir = f"{os.environ['HOME']}/.cache/{__file__.split('/')[-1][:-3]}"
         if not os.path.exists(self.cache_dir):
             os.makedirs(self.cache_dir, mode=0o700, exist_ok=True)
-        
+
         if not cache_file:
             self.cache_file = os.path.join(self.cache_dir, "cache.txt")
 
-        self.cache_lock = threading.Lock()  
-
+        self.cache_lock = threading.Lock()
 
     def clean(self):
         with self.cache_lock:
@@ -57,19 +58,21 @@ class Cache:
             except Exception as e:
                 sys.stderr.write(f"[!] Error writing cache: {e}\n")
 
+
 class Scraper:
     def __init__(self, threads=4, http_success_code=200, data_size=80) -> None:
         self.threads = threads
         self.http_success_code = http_success_code
-        self.data_size = data_size   
+        self.data_size = data_size
         self.cache = Cache()
 
     def __call__(self):
         data = self.cache.read()
         if data != []:
             return data
-        
-        res, err = self.get_call("https://hacker-news.firebaseio.com/v0/topstories.json")
+
+        res, err = self.get_call(
+            "https://hacker-news.firebaseio.com/v0/topstories.json")
         if err:
             sys.stderr.write(err)
             return []
@@ -81,7 +84,8 @@ class Scraper:
         results_lock = threading.Lock()
 
         for read_id in read_ids:
-            thread = threading.Thread(target=self.fetch_and_process, args=(read_id, reads, results_lock))
+            thread = threading.Thread(
+                target=self.fetch_and_process, args=(read_id, reads, results_lock))
             threads.append(thread)
             thread.start()
 
@@ -111,15 +115,15 @@ class Scraper:
             res = json.load(con)
             con.close()
         except urllib.error.URLError as e:
-                return "", f"[!] Connection problem, can't reach server -- {e}"
+            return "", f"[!] Connection problem, can't reach server -- {e}"
         except json.JSONDecodeError as e:
-                return "", f"[!] Error decoding json -- {e}"
+            return "", f"[!] Error decoding json -- {e}"
         return res, None
-    
+
     def fetch_and_process(self, read_id, results, results_lock):
         url = f"https://hacker-news.firebaseio.com/v0/item/{read_id}.json"
         res, err = self.get_call(url)
-        
+
         if not err:
             res_dict = res
             link = res_dict.get('url', "<no_link>")
@@ -129,9 +133,10 @@ class Scraper:
                 'link': link,
                 'comments': f"https://news.ycombinator.com/item?id={read_id}",
             }
-            
+
             with results_lock:
                 results.append(read)
+
 
 class Reader:
     def __init__(self, reads_size=80, page_size=10, data_unit_size=5):
@@ -139,12 +144,13 @@ class Reader:
         self.page_size = page_size
         self.data_unit_size = data_unit_size
 
-        self.scraper = Scraper(threads=4, http_success_code=200, data_size=self.reads_size)
+        self.scraper = Scraper(
+            threads=4, http_success_code=200, data_size=self.reads_size)
 
     def build_banner(self):
         banner = "\033c\nFetching HackerNews API ...\n"
         return banner
-    
+
     def build_menu(self):
         menu = (
             '\033c'
@@ -185,13 +191,14 @@ class Reader:
         elif read[0] == "&":
             try:
                 comment = int(read[1:])
-                if os.getenv("BROWSER", "") != 0:
-                  self.open_browser(data, comment, "&")
+                if os.getenv("OPEN_BROWSER", "") != 0:
+                    self.open_browser(data, comment, "&")
                 elif self.copy_to_clipboard(data, comment, "&") != 0:
-                    sys.stderr.write("[!] Read input out of bounds for data size\n")
+                    sys.stderr.write(
+                        "[!] Read input out of bounds for data size\n")
                     _ = int("IndexOutOfRange")
                 else:
-                  raise("Error opening link")
+                    raise ("Error opening link")
             except ValueError:
                 return data, handle
         # Scroll reader left
@@ -224,7 +231,7 @@ class Reader:
                 if data == []:
                     sys.stderr.write("[!] Error fetching data\n")
                     self.scraper.cache.clean()
-                return data, 0 #self.render(data, 0)
+                return data, 0  # self.render(data, 0)
         # Display help menu
         elif read == "h" or read == "help":
             print(self.build_menu())
@@ -233,10 +240,11 @@ class Reader:
         else:
             try:
                 read = int(read)
-                if os.getenv("BROWSER", "") != 0:
-                  self.open_browser(data, read)
+                if os.getenv("OPEN_BROWSER", "") != 0:
+                    self.open_browser(data, read)
                 if self.copy_to_clipboard(data, read) != 0:
-                    sys.stderr.write("[!] Read input out of bounds for data size\n")
+                    sys.stderr.write(
+                        "[!] Read input out of bounds for data size\n")
                     _ = int("IndexOutOfRange")
             except ValueError:
                 return data, handle
@@ -244,24 +252,24 @@ class Reader:
 
     def open_browser(self, data, index, mode=""):
         if index != 0:
-          if mode == "&":
-            index = index * self.data_unit_size - 1
-          else:
-            index = index * self.data_unit_size - 2
-          if index > self.reads_size*self.data_unit_size:
-            return 2
-          
-          link = data[index]
-          _, link = link.split(": ")
-          if link == "<no_link>" or link == "":
-              return 1
-          
-          cmd = f"{os.getenv('BROWSER', '')} {link}"
-          try:
-              os.system(cmd)
-              return 0
-          except:
-              sys.stderr.write("[!] Error calling subprocess\n")
+            if mode == "&":
+                index = index * self.data_unit_size - 1
+            else:
+                index = index * self.data_unit_size - 2
+            if index > self.reads_size*self.data_unit_size:
+                return 2
+
+            link = data[index]
+            _, link = link.split(": ")
+            if link == "<no_link>" or link == "":
+                return 1
+
+            cmd = f"{os.getenv('OPEN_BROWSER', '')} {link}"
+            try:
+                os.system(cmd)
+                return 0
+            except:
+                sys.stderr.write("[!] Error calling subprocess\n")
 
     def copy_to_clipboard(self, data, index, mode=""):
         if index != 0:
@@ -271,12 +279,12 @@ class Reader:
                 index = index * self.data_unit_size - 2
             if index > self.reads_size*self.data_unit_size:
                 return 2
-            
+
             link = data[index]
             _, link = link.split(": ")
             if link == "<no_link>" or link == "":
                 return 1
-            
+
             cmd = f"echo {link} | xclip -selection clipboard"
             try:
                 os.system(cmd)
@@ -306,7 +314,7 @@ class Reader:
             sys.stderr.write("[!] Error fetching data\n")
             time.sleep(2)
             return
-        
+
         handle = 0
         while True:
             data, handle = self.run(data, handle)
