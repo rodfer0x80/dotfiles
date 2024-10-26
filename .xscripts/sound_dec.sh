@@ -1,5 +1,5 @@
 #!/bin/sh
 
-VOL="-2%"
-SINK=$(pactl info | grep 'Default Sink' | cut -d':' -f2)
-pactl set-sink-volume $SINK $VOL
+VOL="2%-"
+wpctl set-volume @DEFAULT_SINK@ $VOL
+exit 0

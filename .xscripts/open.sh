@@ -3,7 +3,8 @@
 open()
 {
     if [ "$1" == "" ]; then
-        url=$(xclip -o)
+      rofi -show drun -show-icons  
+      #url=$(xclip -o)
     else
         url="$1"
     fi
@@ -20,9 +21,9 @@ open()
         *png|*jpg|*jpeg|*bmp|*svg|*gif)
             setsid -f display "$url" >/dev/null 2>&1 & ;;
         ^http*pdf|^https*pdf) 
-            curl -sL "$url" > "/tmp/$(echo "$url" | sed "s/.*\///;s/%20/ /g")" &&  setsid -f zathura "/tmp/$(echo "$url" | sed "s/.*\///;s/%20/ /g")" >/dev/null 2>&1 &;;
+            curl -sL "$url" > "/tmp/$(echo "$url" | sed "s/.*\///;s/%20/ /g")" &&  setsid -f chromium "/tmp/$(echo "$url" | sed "s/.*\///;s/%20/ /g")" >/dev/null 2>&1 &;;
         *pdf)
-            setsid -f zathura "$url" >/dev/null 2>&1 & ;;
+            setsid -f chromium "$url" >/dev/null 2>&1 & ;;
         *txt|*html|*csv|*yaml|Dockerfile|dockerfile|makefile|Makefile|*c|*cpp|*h|*hpp|*py|*hs|*rs|*css|*js|*pl|*php)
             setsid -f vim "$url" ;;
         ^http*|^https*)

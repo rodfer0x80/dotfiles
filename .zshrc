@@ -279,9 +279,9 @@ else
 fi
 
 # envvars configs
-export _BROWSER="firefox"
-mkdir -p "/opt/firefox"
-export BROWSER="firejail --private=/opt/firefox firefox"
+export BROWSER="firefox"
+mkdir -p "$XDG_DATA_HOME/firefox"
+export OPEN_BROWSER="firejail --private=$XDG_DATA_HOME/firefox firefox"
 export EDITOR="nvim"
 
 
@@ -399,6 +399,7 @@ alias screenshot="~/.xscripts/screenshot.sh"
 alias clip="xclip -selection clipboard"                                 # copy to clipboard
 alias dualmon="~/.xscripts/dualmon.sh"
 alias desktopmon="~/.xscripts/desktopmon.sh"
+alias yaydl="~/.xscripts/yaydl.sh"
 #alias pst="echo `xclip -o` >> $1"
 
 # files
@@ -413,7 +414,7 @@ alias hackernews="~/scripts/web/hackernewscli.py"
 alias wdl="~/scripts/web/wdl.sh"
 alias portkill="~/scripts/networks/port_kill.sh"
 alias chrome="setsid -f chromium >/dev/null 2>&1 &"
-
+alias torr="~/.xscripts/tor_toggle.sh"
 # audio
 alias mpdstop="systemctl --user stop mpd.service"
 alias wav2mp3="~/scripts/audio/wav2mp3.sh"
@@ -451,6 +452,7 @@ alias gitc="git checkout"
 # backup
 alias backup="~/scripts/backup/backup/backup.sh"
 alias backup-workspace="~/scripts/backup/backup_workspace/backup_workspace.sh"
+alias backup-anarchybox="~/scripts/backup/backup_anarchybox/backup_anarchybox.sh"
 alias build-dotfiles="~/scripts/backup/build_dotfiles/build_dotfiles.sh"
 alias burniso="~/scripts/backup/burn_iso/burn_iso.sh"
 

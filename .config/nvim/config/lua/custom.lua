@@ -63,7 +63,7 @@ vim.o.wildmenu = true
 vim.o.guicursor = "a:blinkon0"
 
 -- Font (adjust if needed)
-vim.o.guifont = "Hack Nerd Font Mono 12"
+vim.o.guifont = "Hack Nerd Font Mono 14"
 
 -- Scrolling
 vim.o.scrolloff = 16

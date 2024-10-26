@@ -8,8 +8,8 @@ return {
     'mfussenegger/nvim-dap',
     'folke/lsp-colors.nvim',
   },
-  lazy = true,  -- Lazy load the plugin
-  ft = { 'sc', 'scala', 'sbt', 'java' },  -- Load only for Scala, SBT, and Java files
+  lazy = true,
+  ft = { 'sc', 'scala', 'sbt', 'java' },
   config = function()
     vim.env.JAVA_HOME = "/usr/lib/jvm/java-17-openjdk"
 
@@ -32,7 +32,7 @@ return {
     vim.cmd([[
       augroup nvim_metals
         autocmd!
-        autocmd FileType scala,sbt lua require('metals').initialize_or_attach(metals_config)
+        autocmd FileType scala,sbt,sc  lua require('metals').initialize_or_attach(metals_config)
       augroup end
     ]])
   end,

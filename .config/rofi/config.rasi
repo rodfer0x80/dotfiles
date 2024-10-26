@@ -1,0 +1,68 @@
+configuration {
+    font: "Hack 24";
+    terminal: "st";
+    location: 0;
+    dpi: 96;
+    hide-scrollbar: true;
+    lines: 1;
+    columns: 10;
+    width: 90%;
+}
+
+window {
+    transparency: "real";
+    opacity: 0.95;
+    padding: 1;
+    border: 2px;
+    border-color: #ffa000;
+    background-color: black;
+}
+
+mainbox {
+    padding: 5;
+}
+
+inputbar {
+    padding: 5px;
+    background-color: black;
+    text-color: #cccccc;
+}
+
+prompt {
+    text-color: #ffa000;
+}
+
+entry {
+    text-color: #cccccc;
+}
+
+listview {
+    margin: 5 0 0 0;
+    spacing: 5px;
+    fixed-height: false;
+    fixed-columns: true;
+}
+
+element {
+    padding: 5;
+}
+
+element normal.normal {
+    background-color: transparent;
+    text-color: #cccccc;
+}
+
+element selected.normal {
+    background-color: #555555;
+    text-color: #ffa000;
+}
+
+element alternate.normal {
+    background-color: transparent;
+    text-color: #cccccc;
+}
+
+/* Changed to match the orange color */
+element-text selected {
+    text-color: #ffa000;
+}
