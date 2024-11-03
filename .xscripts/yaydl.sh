@@ -1,7 +1,8 @@
 #!/bin/sh
 sudo pacman -Syu
 sudo pacman -S base-devel git
-git clone https://aur.archlinux.org/yay.git /tmp/yay
-cd /tmp/yay
+mkdir -p ~/desktop
+cd ~/desktop
+git clone https://aur.archlinux.org/yay.git ~/desktop/yay
 makepkg -si
 yay --version

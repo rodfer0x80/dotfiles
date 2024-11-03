@@ -27,9 +27,9 @@ vim.o.fileencodings = "utf-8"
 vim.o.ttyfast = true
 
 -- Tabs and Indentation
-vim.o.tabstop = 2
-vim.o.softtabstop = 2
-vim.o.shiftwidth = 2
+vim.o.tabstop = 4
+vim.o.softtabstop = 4
+vim.o.shiftwidth = 4
 vim.o.expandtab = true
 vim.o.smartindent = true
 
@@ -47,7 +47,7 @@ else
 end
 
 -- Session management
-vim.g.session_directory = "~/.vim/session"
+vim.g.session_directory = "~/.nvim/session"
 vim.g.session_autoload = "no"
 vim.g.session_autosave = "no"
 vim.g.session_command_aliases = 1
@@ -86,7 +86,7 @@ vim.g.mapleader = " "
 -- Undo and backup
 vim.o.swapfile = false
 vim.o.backup = false
-vim.o.undodir = vim.fn.expand("~/.vim/undodir")
+vim.o.undodir = vim.fn.expand("~/.nvim/undodir")
 vim.o.undofile = true
 
 -- Colors and appearance

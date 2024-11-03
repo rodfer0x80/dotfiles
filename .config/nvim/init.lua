@@ -10,5 +10,6 @@ require("lua.remap")
 require("lua.custom")
 require("lua.lazy")
 require("lua.theme")
-print("hack the planet")
+print("λ")
+--print("hack the planet")
 

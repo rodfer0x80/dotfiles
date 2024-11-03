@@ -20,8 +20,16 @@ xcompmgr -n &
 # TuneD power management
 ~/.xscripts/tuned.sh &
 
-# Keyboard GB
-setxkbmap -layout gb
+# Keyboard GB NOCAPS
+xrdb -merge $HOME/.Xresources
+xmodmap ~/.Xmodmap
+setxkbmap -layout gb -option ctrl:nocaps
+
+# Disable bell
+xset -bell 
+
+eval `/usr/bin/ssh-agent`
 
 # DWM run
+#exec xmonad
 exec dwm

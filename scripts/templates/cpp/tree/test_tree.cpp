@@ -1,6 +1,6 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+#include "tree.cpp"
 #include <doctest.h>
-#include "tree.h"
 
 TEST_CASE("Tree Height Tests") {
     Tree tree;

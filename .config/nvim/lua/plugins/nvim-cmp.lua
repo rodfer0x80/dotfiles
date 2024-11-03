@@ -2,52 +2,44 @@ return {
   {
     'hrsh7th/nvim-cmp',
     dependencies = {
-      'hrsh7th/cmp-nvim-lsp',   -- LSP source for nvim-cmp
-      'hrsh7th/cmp-buffer',     -- Buffer source for nvim-cmp
-      'hrsh7th/cmp-path',       -- Path source for nvim-cmp
-      'hrsh7th/cmp-cmdline',    -- Cmdline source for nvim-cmp
-      'L3MON4D3/LuaSnip',       -- Snippet engine
-      'saadparwaiz1/cmp_luasnip', -- Snippet source for nvim-cmp
+      'L3MON4D3/LuaSnip',
+      'saadparwaiz1/cmp_luasnip',
+      'hrsh7th/cmp-nvim-lsp',
+      'hrsh7th/cmp-buffer',
+      'hrsh7th/cmp-path',
     },
     config = function()
       local cmp = require('cmp')
+      local luasnip = require('luasnip')
 
       cmp.setup({
         snippet = {
           expand = function(args)
-            require('luasnip').lsp_expand(args.body) -- For snippet expansion
+            luasnip.lsp_expand(args.body)
           end,
         },
-        mapping = {
-          ['<C-n>'] = cmp.mapping.select_next_item(), -- Move to the next completion item
-          ['<C-p>'] = cmp.mapping.select_prev_item(), -- Move to the previous completion item
-          ['<CR>']  = cmp.mapping.confirm({ select = true }), -- Confirm selection
-          ['<C-a>'] = cmp.mapping.abort(), -- Abort completion
-        },
-        sources = {
-          { name = 'nvim_lsp' },
-          { name = 'buffer' },
-          { name = 'path' },
-          { name = 'cmdline' },
-          { name = 'luasnip' },
-        },
-        formatting = {
-          format = function(entry, vim_item)
-            return vim_item -- Customize appearance of completion items
-          end,
-        },
-      })
-
-      -- Additional configuration for command-line completion
-      cmp.setup.cmdline(':', {
+        mapping = cmp.mapping.preset.insert({
+          ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+          ['<C-f>'] = cmp.mapping.scroll_docs(4),
+          ['<C-Space>'] = cmp.mapping.complete(),
+          ['<CR>'] = cmp.mapping.confirm({ select = true }),
+          ['<Tab>'] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              cmp.select_next_item()
+            elseif luasnip.expand_or_jumpable() then
+              luasnip.expand_or_jump()
+            else
+              fallback()
+            end
+          end, { 'i', 's' }),
+        }),
         sources = cmp.config.sources({
-          { name = 'cmdline' },
-        }, {
+          { name = 'nvim_lsp' },
+          { name = 'luasnip' },
+          { name = 'buffer' },
           { name = 'path' },
         }),
       })
-    end,
-  },
-
-  -- Add other plugins and configurations as needed
+    end
+  }
 }
