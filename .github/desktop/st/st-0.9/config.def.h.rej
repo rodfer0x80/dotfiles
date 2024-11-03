@@ -1,0 +1,9 @@
+--- config.def.h	2022-03-13 02:45:34.586842452 +0400
++++ config.def.h	2022-03-13 02:45:34.586842452 +0400
+@@ -205,6 +209,14 @@
+ 	{ TERMMOD,              XK_Y,           selpaste,       {.i =  0} },
+ 	{ ShiftMask,            XK_Insert,      selpaste,       {.i =  0} },
+ 	{ TERMMOD,              XK_Num_Lock,    numlock,        {.i =  0} },
+ };
+ 
+ /*
