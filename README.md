@@ -1,3 +1,3 @@
 # dotfiles
 
-<img src=".github/desktop.jpg"></img>
+<img src="./.github/desktop.jpg"></img>
