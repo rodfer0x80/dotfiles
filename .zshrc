@@ -399,7 +399,7 @@ alias screenshot="~/.xscripts/screenshot.sh"
 alias clip="xclip -selection clipboard"                                 # copy to clipboard
 alias dualmon="~/.xscripts/dualmon.sh"
 alias desktopmon="~/.xscripts/desktopmon.sh"
-alias yaydl="~/.xscripts/yaydl.sh"
+alias yaydl="~/scripts/system/yaydl.sh"
 #alias pst="echo `xclip -o` >> $1"
 
 # files
